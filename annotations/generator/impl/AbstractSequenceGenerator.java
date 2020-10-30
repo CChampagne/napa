@@ -1,19 +1,16 @@
-/**
- * by Christophe Champagne (GII561)
- */
-package com.ibm.next.mam.persistence.annotations.generator.impl;
+package nanodb.annotations.generator.impl;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.annotations.GeneratedValue;
-import com.ibm.next.mam.persistence.annotations.Parameter;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.annotations.generator.Generator;
-import com.ibm.next.mam.persistence.entity.Persistable;
+import nanodb.exceptions.AnnotationException;
+import nanodb.exceptions.PersistenceException;
+import nanodb.annotations.GeneratedValue;
+import nanodb.annotations.Parameter;
+import nanodb.annotations.atk.EntityField;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.annotations.generator.Generator;
+import nanodb.entity.Persistable;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public abstract class AbstractSequenceGenerator extends AbstractGenerator{
@@ -22,7 +19,7 @@ public abstract class AbstractSequenceGenerator extends AbstractGenerator{
 	private short step = 1;
 
 	/**
-	 * @see com.ibm.next.mam.persistence.annotations.generator.Generator#initInstance(java.lang.String, com.ibm.next.mam.persistence.annotations.atk.EntityField, com.ibm.next.mam.persistence.annotations.atk.EntityHandler)
+	 * @see nanodb.annotations.generator.Generator#initInstance(java.lang.String, nanodb.annotations.atk.EntityField, nanodb.annotations.atk.EntityHandler)
 	 */
 	protected void performTypeCheck(EntityField entityField) throws PersistenceException{
 		expectedClass = entityField.getJavaType();
@@ -38,7 +35,7 @@ public abstract class AbstractSequenceGenerator extends AbstractGenerator{
 		return expectedClass;
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.annotations.generator.impl.AbstractGenerator#performInit(com.ibm.next.mam.persistence.annotations.GeneratedValue, com.ibm.next.mam.persistence.annotations.atk.EntityField, com.ibm.next.mam.persistence.annotations.atk.EntityHandler)
+	 * @see nanodb.annotations.generator.impl.AbstractGenerator#performInit(nanodb.annotations.GeneratedValue, nanodb.annotations.atk.EntityField, nanodb.annotations.atk.EntityHandler)
 	 */
 	@Override
 	protected <E extends Persistable> Generator performInit(

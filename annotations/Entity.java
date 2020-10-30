@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence.annotations;
+package nanodb.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * @author GII561
+ * @author Christophe Champagne
  *
  */
 @Target(value={ElementType.TYPE})

@@ -1,18 +1,18 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.impl.sqlite;
+package nanodb.impl.sqlite;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.ConnectionProvider;
-import com.ibm.next.mam.persistence.EntityDaoFactory;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.entity.Persistable;
-import com.ibm.next.mam.persistence.impl.EntityDaoImpl;
+import nanodb.exceptions.AnnotationException;
+import nanodb.exceptions.PersistenceException;
+import nanodb.ConnectionProvider;
+import nanodb.EntityDaoFactory;
+import nanodb.annotations.atk.EntityField;
+import nanodb.entity.Persistable;
+import nanodb.impl.EntityDaoImpl;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class SQLiteEntityDao<E extends Persistable> extends EntityDaoImpl<E> {
@@ -38,7 +38,7 @@ public class SQLiteEntityDao<E extends Persistable> extends EntityDaoImpl<E> {
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.impl.EntityDaoImpl#checkValue(java.lang.Object, com.ibm.next.mam.persistence.annotations.atk.EntityField)
+	 * @see nanodb.impl.EntityDaoImpl#checkValue(java.lang.Object, nanodb.annotations.atk.EntityField)
 	 */
 	@Override
 	protected void checkValue(Object val, EntityField field) throws PersistenceException {

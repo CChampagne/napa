@@ -1,23 +1,20 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.util.List;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.SQLException;
-import com.ibm.next.mam.persistence.entity.Persistable;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *  
  */
 /*
  * NTH use also generic for key type so we can represent a multiple primary key by one class
  * and use it for the select method
  */
-public interface EntityDao<E extends Persistable> {
+public interface EntityDao<E> {
 	/**
 	 * Select an entity by giving another instance of the entity having the the fields
 	 * annotated by @code@Id correctly filled.

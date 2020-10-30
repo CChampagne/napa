@@ -1,4 +1,4 @@
-package com.ibm.next.mam.persistence.impl;
+package nanodb.impl;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -7,14 +7,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.SQLException;
-import com.ibm.next.mam.persistence.ConnectionProvider;
-import com.ibm.next.mam.persistence.ConnectionProviderHelper;
-import com.ibm.next.mam.persistence.EntityDaoFactory;
-import com.ibm.next.mam.persistence.JdbcDao;
-import com.ibm.next.mam.persistence.SQLTypeMapper;
-import com.ibm.next.mam.persistence.mapper.RecordMapper;
+import nanodb.exceptions.PersistenceException;
+import nanodb.exceptions.SQLException;
+import nanodb.ConnectionProvider;
+import nanodb.ConnectionProviderHelper;
+import nanodb.EntityDaoFactory;
+import nanodb.JdbcDao;
+import nanodb.SQLTypeMapper;
+import nanodb.mapper.RecordMapper;
 import com.ibm.next.mam.util.ObjectDisplayer;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
@@ -33,7 +33,7 @@ public class JdbcDaoImpl implements JdbcDao {
 		this(ConnectionProviderHelper.getConnectionProvider(factory.getClass()), factory);
 	}
 	/* (non-Javadoc)
-	 * @see com.ibm.next.mam.persistence.JdbcDao#select(java.lang.String, com.ibm.next.mam.persistence.mapper.RecordMapper, java.lang.Object)
+	 * @see nanodb.JdbcDao#select(java.lang.String, nanodb.mapper.RecordMapper, java.lang.Object)
 	 */
 	public <T> List<T> select(String query, RecordMapper<T> mapper,Object...parameters) throws SQLException, PersistenceException{
 		List<T> list = new ArrayList<T>();
@@ -60,7 +60,7 @@ public class JdbcDaoImpl implements JdbcDao {
 		return list;
 	}
 	/* (non-Javadoc)
-	 * @see com.ibm.next.mam.persistence.JdbcDao#prepareStatement(java.lang.String, java.lang.Object)
+	 * @see nanodb.JdbcDao#prepareStatement(java.lang.String, java.lang.Object)
 	 */
 	public PreparedStatement prepareStatement(String query, Object...parameters) throws PersistenceException{
 		if(TRACE.isLogging(Severities.DEBUG)){
@@ -92,7 +92,7 @@ public class JdbcDaoImpl implements JdbcDao {
 //		return blob;
 //	}
 	/* (non-Javadoc)
-	 * @see com.ibm.next.mam.persistence.JdbcDao#executeUpdate(java.lang.String, java.lang.Object)
+	 * @see nanodb.JdbcDao#executeUpdate(java.lang.String, java.lang.Object)
 	 */
 	public void executeUpdate(String query, Object...parameters) throws PersistenceException{
 		PreparedStatement statement = null;

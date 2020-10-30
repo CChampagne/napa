@@ -1,16 +1,16 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.mapper.ResultsetAccessor;
+import nanodb.exceptions.PersistenceException;
+import nanodb.mapper.ResultsetAccessor;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public interface SQLTypeMapper {

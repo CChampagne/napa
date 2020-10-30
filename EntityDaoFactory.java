@@ -1,16 +1,16 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.entity.Persistable;
-import com.ibm.next.mam.persistence.mapper.impl.EntityRecordMapper;
+import nanodb.exceptions.AnnotationException;
+import nanodb.exceptions.PersistenceException;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.entity.Persistable;
+import nanodb.mapper.impl.EntityRecordMapper;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public interface EntityDaoFactory {

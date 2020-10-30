@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence.annotations.atk;
+package nanodb.annotations.atk;
 
 import java.lang.annotation.AnnotationFormatError;
 import java.lang.reflect.AnnotatedElement;
@@ -19,30 +19,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.EntityDaoFactory;
-import com.ibm.next.mam.persistence.SQLTypeMapper;
-import com.ibm.next.mam.persistence.annotations.DBField;
-import com.ibm.next.mam.persistence.annotations.Entity;
-import com.ibm.next.mam.persistence.annotations.GeneratedValue;
-import com.ibm.next.mam.persistence.annotations.Id;
-import com.ibm.next.mam.persistence.annotations.Index;
-import com.ibm.next.mam.persistence.annotations.Indexed;
-import com.ibm.next.mam.persistence.annotations.Indexes;
-import com.ibm.next.mam.persistence.annotations.NotNull;
-import com.ibm.next.mam.persistence.annotations.Transient;
-import com.ibm.next.mam.persistence.annotations.UniqueIndexed;
-import com.ibm.next.mam.persistence.annotations.generator.Generator;
-import com.ibm.next.mam.persistence.annotations.generator.GeneratorFactory;
-import com.ibm.next.mam.persistence.entity.Persistable;
+import nanodb.exceptions.AnnotationException;
+import nanodb.exceptions.PersistenceException;
+import nanodb.EntityDaoFactory;
+import nanodb.SQLTypeMapper;
+import nanodb.annotations.DBField;
+import nanodb.annotations.Entity;
+import nanodb.annotations.GeneratedValue;
+import nanodb.annotations.Id;
+import nanodb.annotations.Index;
+import nanodb.annotations.Indexed;
+import nanodb.annotations.Indexes;
+import nanodb.annotations.NotNull;
+import nanodb.annotations.Transient;
+import nanodb.annotations.UniqueIndexed;
+import nanodb.annotations.generator.Generator;
+import nanodb.annotations.generator.GeneratorFactory;
+import nanodb.entity.Persistable;
 import com.ibm.next.mam.util.Conditions;
 import com.ibm.next.mam.util.StringUtil;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
 
 /**
- * @author GII561
+ * @author Christophe Champagne
  * Class intended to facilitate the mapping between the persistent POJOs and the corresponding database table.
  * It retrieves the metadata necessary for persistence 
  */

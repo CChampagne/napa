@@ -1,19 +1,19 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.impl.db2e;
+package nanodb.impl.db2e;
 
-import com.ibm.next.mam.persistence.SQLTypeMapper;
-import com.ibm.next.mam.persistence.impl.EntityDaoFactoryImpl;
+import nanodb.SQLTypeMapper;
+import nanodb.impl.EntityDaoFactoryImpl;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class DB2eEntityDaoFactory extends EntityDaoFactoryImpl {
 
 	/**
-	 * @see com.ibm.next.mam.persistence.impl.EntityDaoFactoryImpl#getSqlTypeMapper()
+	 * @see nanodb.impl.EntityDaoFactoryImpl#getSqlTypeMapper()
 	 */
 	@Override
 	public SQLTypeMapper getSqlTypeMapper() {

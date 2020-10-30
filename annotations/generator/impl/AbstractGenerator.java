@@ -1,26 +1,23 @@
-/**
- * by Christophe Champagne (GII561)
- */
-package com.ibm.next.mam.persistence.annotations.generator.impl;
+package nanodb.annotations.generator.impl;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.EntityDaoFactory;
-import com.ibm.next.mam.persistence.annotations.GeneratedValue;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.annotations.generator.Generator;
-import com.ibm.next.mam.persistence.entity.Persistable;
+import nanodb.exceptions.AnnotationException;
+import nanodb.exceptions.PersistenceException;
+import nanodb.EntityDaoFactory;
+import nanodb.annotations.GeneratedValue;
+import nanodb.annotations.atk.EntityField;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.annotations.generator.Generator;
+import nanodb.entity.Persistable;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public abstract class AbstractGenerator implements Generator{
 	private EntityDaoFactory factory;
 
 	/**
-	 * @see com.ibm.next.mam.persistence.annotations.generator.Generator#initInstance(com.ibm.next.mam.persistence.annotations.GeneratedValue, com.ibm.next.mam.persistence.annotations.atk.EntityField, com.ibm.next.mam.persistence.annotations.atk.EntityHandler)
+	 * @see nanodb.annotations.generator.Generator#initInstance(nanodb.annotations.GeneratedValue, nanodb.annotations.atk.EntityField, nanodb.annotations.atk.EntityHandler)
 	 */
 	public <E extends Persistable> Generator initInstance(
 			GeneratedValue annotation, EntityField field,
@@ -46,7 +43,7 @@ public abstract class AbstractGenerator implements Generator{
 			GeneratedValue annotation, EntityField field, EntityHandler<E> entity) 
 			throws AnnotationException,PersistenceException;
 	/**
-	 * @see com.ibm.next.mam.persistence.annotations.generator.Generator#setFactory(com.ibm.next.mam.persistence.EntityDaoFactory)
+	 * @see nanodb.annotations.generator.Generator#setFactory(nanodb.EntityDaoFactory)
 	 */
 	public void setFactory(EntityDaoFactory factory) {
 		this.factory = factory;

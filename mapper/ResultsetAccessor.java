@@ -1,14 +1,14 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.mapper;
+package nanodb.mapper;
 
 import java.sql.ResultSet;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
+import nanodb.exceptions.PersistenceException;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 

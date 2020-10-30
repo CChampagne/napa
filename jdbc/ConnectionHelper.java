@@ -1,11 +1,11 @@
 
-package com.ibm.next.mam.persistence.jdbc;
+package nanodb.jdbc;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
-import com.ibm.next.mam.persistence.ConnectionProvider;
+import nanodb.ConnectionProvider;
 import com.sap.ip.me.api.logging.Trace;
 import com.sap.ip.me.api.persist.core.PersistenceRuntime;
 import com.sap.ip.me.persist.jdbc.DBManager;
@@ -13,7 +13,7 @@ import com.sap.ip.me.persist.jdbc.DBPersistenceRuntimeImpl;
 
 /**
  * Class in charge of retrieving a valid DB connection
- * @author GII561
+ * @author Christophe Champagne
  *
  */
 public class ConnectionHelper {

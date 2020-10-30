@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.annotations.generator;
+package nanodb.annotations.generator;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -10,19 +10,19 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.annotations.GeneratedValue;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.annotations.generator.impl.CalendarGenerator;
-import com.ibm.next.mam.persistence.annotations.generator.impl.DateGenerator;
-import com.ibm.next.mam.persistence.annotations.generator.impl.PseudoSequenceGenerator;
-import com.ibm.next.mam.persistence.entity.Persistable;
+import nanodb.exceptions.PersistenceException;
+import nanodb.annotations.GeneratedValue;
+import nanodb.annotations.atk.EntityField;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.annotations.generator.impl.CalendarGenerator;
+import nanodb.annotations.generator.impl.DateGenerator;
+import nanodb.annotations.generator.impl.PseudoSequenceGenerator;
+import nanodb.entity.Persistable;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  * Class in charge of retrieving the instance of a generator corresponding to the given parameters
  * 
  */

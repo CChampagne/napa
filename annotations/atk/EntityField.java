@@ -1,21 +1,21 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence.annotations.atk;
+package nanodb.annotations.atk;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Types;
 
-import com.ibm.next.mam.persistence.FieldMetaData;
-import com.ibm.next.mam.persistence.annotations.DBField;
-import com.ibm.next.mam.persistence.annotations.GeneratedValue;
-import com.ibm.next.mam.persistence.annotations.generator.Generator;
-import com.ibm.next.mam.persistence.entity.Persistable;
+import nanodb.FieldMetaData;
+import nanodb.annotations.DBField;
+import nanodb.annotations.GeneratedValue;
+import nanodb.annotations.generator.Generator;
+import nanodb.entity.Persistable;
 
 /**
- * @author GII561
+ * @author Christophe Champagne
  * This class represents a field. 
  * It allows to set and get value 
  * of that field to the Java 
@@ -263,7 +263,7 @@ public class EntityField implements FieldMetaData{
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.FieldMetaData#getFieldName()
+	 * @see nanodb.FieldMetaData#getFieldName()
 	 */
 	public String getFieldName() {
 		return getDBFieldName();

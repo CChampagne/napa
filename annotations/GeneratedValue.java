@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence.annotations;
+package nanodb.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * This annotation can be used on an attribute of a bean or a getter or a setter<br> 
  * It specifies the values is generated on insert.<br> 
  * 
- * @author GII561
+ * @author Christophe Champagne
  *
  */
 @Target(value={ElementType.METHOD,ElementType.FIELD})

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence.annotations;
+package nanodb.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * 
  * NOTE: using the transient modifier on a variable should have the same effect
  * 
- * @author GII561
+ * @author Christophe Champagne
  *
  */
 @Target(value={ElementType.METHOD,ElementType.FIELD})

@@ -1,16 +1,16 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.jdbc;
+package nanodb.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.ibm.next.mam.persistence.ConnectionProvider;
+import nanodb.ConnectionProvider;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class SAPConnectionProvider implements ConnectionProvider {
@@ -28,7 +28,7 @@ public class SAPConnectionProvider implements ConnectionProvider {
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.ConnectionProvider#resetConnection(java.lang.String, java.lang.String, java.lang.String, java.util.Map)
+	 * @see nanodb.ConnectionProvider#resetConnection(java.lang.String, java.lang.String, java.lang.String, java.util.Map)
 	 */
 	public Connection resetConnection(String connectionString, String user, String password,
 			Map<?, ?> additionalParameters) throws SQLException {

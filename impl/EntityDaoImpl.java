@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.impl;
+package nanodb.impl;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -10,28 +10,28 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.SQLException;
-import com.ibm.next.mam.persistence.ConnectionProvider;
-import com.ibm.next.mam.persistence.ConnectionProviderHelper;
-import com.ibm.next.mam.persistence.EntityDao;
-import com.ibm.next.mam.persistence.EntityDaoFactory;
-import com.ibm.next.mam.persistence.JdbcDao;
-import com.ibm.next.mam.persistence.SQLGenerator;
-import com.ibm.next.mam.persistence.SQLNull;
-import com.ibm.next.mam.persistence.annotations.DBField;
-import com.ibm.next.mam.persistence.annotations.GeneratedValue;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.annotations.generator.impl.SingleValueMapper;
-import com.ibm.next.mam.persistence.entity.Persistable;
-import com.ibm.next.mam.persistence.mapper.RecordMapper;
+import nanodb.exceptions.AnnotationException;
+import nanodb.exceptions.PersistenceException;
+import nanodb.exceptions.SQLException;
+import nanodb.ConnectionProvider;
+import nanodb.ConnectionProviderHelper;
+import nanodb.EntityDao;
+import nanodb.EntityDaoFactory;
+import nanodb.JdbcDao;
+import nanodb.SQLGenerator;
+import nanodb.SQLNull;
+import nanodb.annotations.DBField;
+import nanodb.annotations.GeneratedValue;
+import nanodb.annotations.atk.EntityField;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.annotations.generator.impl.SingleValueMapper;
+import nanodb.entity.Persistable;
+import nanodb.mapper.RecordMapper;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
@@ -63,13 +63,13 @@ public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#selectAll(com.ibm.next.mam.persistence.entity.Persistable)
+	 * @see nanodb.EntityDao#selectAll(nanodb.entity.Persistable)
 	 */
 	public List<E> selectAll() throws PersistenceException,	SQLException {
 		return jdbcDao.select(sqlGenerator.createSelectAll(), recordMapper);
 	}
 	/***
-	 * @see com.ibm.next.mam.persistence.EntityDao#select(com.ibm.next.mam.persistence.entity.Persistable)
+	 * @see nanodb.EntityDao#select(nanodb.entity.Persistable)
 	 */
 	public E select(E entityParameter) throws PersistenceException,
 			SQLException {
@@ -90,14 +90,14 @@ public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#select(java.lang.String, java.lang.Object[])
+	 * @see nanodb.EntityDao#select(java.lang.String, java.lang.Object[])
 	 */
 	public List<E> select(String query, Object... parameters)
 			throws PersistenceException, SQLException {
 		return jdbcDao.select(query, recordMapper, parameters);
 	}
 	/**)
-	 * @see com.ibm.next.mam.persistence.EntityDao#insert(com.ibm.next.mam.persistence.entity.Persistable)
+	 * @see nanodb.EntityDao#insert(nanodb.entity.Persistable)
 	 */
 	public void insert(E entity) throws PersistenceException, SQLException {
 		String query = sqlGenerator.createInsert();
@@ -105,7 +105,7 @@ public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#update(com.ibm.next.mam.persistence.entity.Persistable)
+	 * @see nanodb.EntityDao#update(nanodb.entity.Persistable)
 	 */
 	public void update(E entity) throws PersistenceException, SQLException {
 		String query = sqlGenerator.createUpdate();
@@ -120,7 +120,7 @@ public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#persist(com.ibm.next.mam.persistence.entity.Persistable)
+	 * @see nanodb.EntityDao#persist(nanodb.entity.Persistable)
 	 */
 	public void persist(E entity) throws PersistenceException, SQLException {
 		if(recordExists(entity)){
@@ -131,14 +131,14 @@ public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
 	}
 
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#delete(com.ibm.next.mam.persistence.entity.Persistable)
+	 * @see nanodb.EntityDao#delete(nanodb.entity.Persistable)
 	 */
 	public void delete(E entity) throws PersistenceException, SQLException {
 		String query = sqlGenerator.createDelete();
 		jdbcDao.executeUpdate(query, getPrimaryKeyValues(entity, Operation.DELETE));
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#recordExists(com.ibm.next.mam.persistence.entity.Persistable)
+	 * @see nanodb.EntityDao#recordExists(nanodb.entity.Persistable)
 	 */
 	public boolean recordExists(E entity) throws PersistenceException, SQLException {		
 		List<Long> values= jdbcDao.select(isPresentQuery, new SingleValueMapper(), getPrimaryKeyValues(entity, Operation.SELECT));
@@ -146,13 +146,13 @@ public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
 		return count > 0;
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#count()
+	 * @see nanodb.EntityDao#count()
 	 */
 	public long count() throws PersistenceException, SQLException {
 		return count(countQuery);
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#count(java.lang.String, java.lang.Object[])
+	 * @see nanodb.EntityDao#count(java.lang.String, java.lang.Object[])
 	 */
 	public long count(String query, Object... parameters) throws PersistenceException, SQLException {
 		List<Long> values = jdbcDao.select(query, new SingleValueMapper(), parameters);
@@ -162,7 +162,7 @@ public class EntityDaoImpl<E extends Persistable> implements EntityDao<E>{
 		return 0;
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.EntityDao#getEntityClass()
+	 * @see nanodb.EntityDao#getEntityClass()
 	 */
 	public Class<? extends E> getEntityClass() {
 		return entityClass;

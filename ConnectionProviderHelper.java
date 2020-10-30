@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ import com.sap.ip.me.api.logging.Trace;
 
 /**
  * This class allows to associate a default ConnectionProvider with an EntityDaoFactory
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class ConnectionProviderHelper {

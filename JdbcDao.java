@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.SQLException;
-import com.ibm.next.mam.persistence.mapper.RecordMapper;
+import nanodb.exceptions.PersistenceException;
+import nanodb.exceptions.SQLException;
+import nanodb.mapper.RecordMapper;
 
 /**
- * @author GII561
+ * @author Christophe Champagne
  *
  */
 public interface JdbcDao {

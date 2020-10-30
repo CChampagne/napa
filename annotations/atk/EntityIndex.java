@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence.annotations.atk;
+package nanodb.annotations.atk;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
 /**
- * @author GII561
+ * @author Christophe Champagne
  *
  */
 public class EntityIndex {

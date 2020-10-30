@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.impl;
+package nanodb.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,22 +20,22 @@ import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.SQLNull;
-import com.ibm.next.mam.persistence.SQLTypeMapper;
-import com.ibm.next.mam.persistence.annotations.DBField;
-import com.ibm.next.mam.persistence.mapper.ResultsetAccessor;
+import nanodb.exceptions.PersistenceException;
+import nanodb.SQLNull;
+import nanodb.SQLTypeMapper;
+import nanodb.annotations.DBField;
+import nanodb.mapper.ResultsetAccessor;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class DefaultSQLTypeMapper implements SQLTypeMapper {
 	private static Trace TRACE = Trace.getInstance(DefaultSQLTypeMapper.class.getName());
 	
 	/**
-	 * @see com.ibm.next.mam.persistence.SQLTypeMapper#getSqlTypeFromClass(java.lang.Class)
+	 * @see nanodb.SQLTypeMapper#getSqlTypeFromClass(java.lang.Class)
 	 */
 	public int getSqlTypeFromClass(Class<?> cls){
 		if(cls.equals(Integer.class) || cls.equals(Integer.TYPE)){
@@ -67,7 +67,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		return Types.NULL;
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.SQLTypeMapper#getSizeFromType(int)
+	 * @see nanodb.SQLTypeMapper#getSizeFromType(int)
 	 */
 	public int getSizeFromType(int type){
 		switch(type){
@@ -82,7 +82,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		return DBField.DEFAULT;
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.SQLTypeMapper#getPrecisionFromType(int)
+	 * @see nanodb.SQLTypeMapper#getPrecisionFromType(int)
 	 */
 	public int getPrecisionFromType(int type){
 		switch(type){
@@ -93,7 +93,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		return DBField.DEFAULT;
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.SQLTypeMapper#getResulsetGetterFromClass(java.lang.Class, int)
+	 * @see nanodb.SQLTypeMapper#getResulsetGetterFromClass(java.lang.Class, int)
 	 */
 	public  ResultsetAccessor getResulsetGetterFromClass(final Class<?>cls, int sqlType){
 		ResultsetAccessor resulsetGetter = null;

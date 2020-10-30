@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence.annotations;
+package nanodb.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,49 +13,43 @@ import java.sql.Types;
  * This annotation can be used on an attribute of a bean or a getter or a setter 
  * to map it to a db field<br>
  * 
- * @author GII561
+ * @author Christophe Champagne
  *
  */
 @Target(value={ElementType.METHOD,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DBField {
-	final int DEFAULT = -1;
+	int DEFAULT = -1;
 	/**
 	 * name is the name of the field. If omitted, then the field name corresponds to the attribute name <br>
-	 * @return
 	 */
 	String name() default "";
 	/**
 	 * sqlType is the SQL type as defined in {@link java.sql.Types}. <br> 
 	 * If omitted, then the field name corresponds to the attribute name
-	 * @return
 	 */
 	int sqlType() default Types.NULL;
 	/**
 	 * Size is the size of the column when applicable (e.g. on a varchar but not on an integer).
 	 * This property should be used for validation before persistence and to generate tables creation scripts
 	 * The value is equals to -1 by default
-	 * @return
 	 */
 	int size() default DEFAULT;
 	/**
 	 * Size is the precision of the column when applicable (e.g. on a decimal but not on an integer).
 	 * This property should be used for validation before persistence and to generate EPL code (create table...)
 	 * The value is equals to -1 by default
-	 * @return
 	 */
 	int precision() default DEFAULT;
 	/**
 	 * Tells if the field is (a part of) the primary key.
 	 * This field is fundamental to generate update queries
 	 * (false by default)
-	 * @return
 	 */
 	boolean isPrimaryKey() default false;
 	/**
 	 * Tells if the value of the field can be null.
 	 * (true by default)
-	 * @return
 	 */
 	boolean isNullable() default true;
 	
@@ -66,7 +60,6 @@ public @interface DBField {
 	 *  - varchars must be surrounded by single quotes eg @DBField(default="'Hello world'")<br>
 	 *  - single quotes must be doubled<br>
 	 * 
-	 * @return
 	 */
 	String defaultValue() default "";
 	

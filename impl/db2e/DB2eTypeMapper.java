@@ -1,20 +1,20 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.impl.db2e;
+package nanodb.impl.db2e;
 
 import java.sql.Types;
 
-import com.ibm.next.mam.persistence.impl.DefaultSQLTypeMapper;
+import nanodb.impl.DefaultSQLTypeMapper;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class DB2eTypeMapper extends DefaultSQLTypeMapper {
 
 	/**
-	 * @see com.ibm.next.mam.persistence.impl.DefaultSQLTypeMapper#getSqlTypeFromClass(java.lang.Class)
+	 * @see nanodb.impl.DefaultSQLTypeMapper#getSqlTypeFromClass(java.lang.Class)
 	 */
 	@Override
 	public int getSqlTypeFromClass(Class<?> cls) {
@@ -28,7 +28,7 @@ public class DB2eTypeMapper extends DefaultSQLTypeMapper {
 	//TODO Find a way to determine also to determine size from class
 
 	/**
-	 * @see com.ibm.next.mam.persistence.impl.DefaultSQLTypeMapper#getSizeFromType(int)
+	 * @see nanodb.impl.DefaultSQLTypeMapper#getSizeFromType(int)
 	 */
 	@Override
 	public int getSizeFromType(int type) {

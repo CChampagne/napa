@@ -1,23 +1,23 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.annotations.generator.impl;
+package nanodb.annotations.generator.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.mapper.RecordMapper;
+import nanodb.exceptions.PersistenceException;
+import nanodb.mapper.RecordMapper;
 
 /**
  * Mapper used for the select of a numeric max value or a count
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class SingleValueMapper implements RecordMapper<Long>{
 
 	/**
-	 * @see com.ibm.next.mam.persistence.mapper.RecordMapper#map(java.sql.ResultSet)
+	 * @see nanodb.mapper.RecordMapper#map(java.sql.ResultSet)
 	 */
 	public Long map(ResultSet resultSet) throws SQLException,
 			PersistenceException {

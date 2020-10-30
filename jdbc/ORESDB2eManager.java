@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.jdbc;
+package nanodb.jdbc;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,7 +15,7 @@ import com.sap.ip.me.api.services.MeIterator;
 import com.sap.ip.me.persist.jdbc.IBMDB2eManager;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class ORESDB2eManager extends IBMDB2eManager {

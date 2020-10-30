@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.impl.sqlite;
+package nanodb.impl.sqlite;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,21 +14,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.impl.AbstractResultsetGetter;
-import com.ibm.next.mam.persistence.impl.DefaultSQLTypeMapper;
-import com.ibm.next.mam.persistence.mapper.ResultsetAccessor;
+import nanodb.exceptions.PersistenceException;
+import nanodb.impl.AbstractResultsetGetter;
+import nanodb.impl.DefaultSQLTypeMapper;
+import nanodb.mapper.ResultsetAccessor;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 	private static Trace TRACE = Trace.getInstance(SQLiteTypeMapper.class.getName());
 	
 	/**
-	 * @see com.ibm.next.mam.persistence.SQLTypeMapper#getResulsetGetterFromClass(java.lang.Class, int)
+	 * @see nanodb.SQLTypeMapper#getResulsetGetterFromClass(java.lang.Class, int)
 	 */
 	public  ResultsetAccessor getResulsetGetterFromClass(Class<?>cls, int sqlType){
 		ResultsetAccessor resulsetGetter = null;

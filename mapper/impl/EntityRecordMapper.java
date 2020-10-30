@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.mapper.impl;
+package nanodb.mapper.impl;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -10,20 +10,20 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.errorframework.exceptions.persistence.PersistenceException;
-import com.ibm.next.mam.persistence.EntityDaoFactory;
-import com.ibm.next.mam.persistence.SQLTypeMapper;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.entity.Persistable;
-import com.ibm.next.mam.persistence.mapper.RecordMapper;
-import com.ibm.next.mam.persistence.mapper.ResultsetAccessor;
+import nanodb.exceptions.AnnotationException;
+import nanodb.exceptions.PersistenceException;
+import nanodb.EntityDaoFactory;
+import nanodb.SQLTypeMapper;
+import nanodb.annotations.atk.EntityField;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.entity.Persistable;
+import nanodb.mapper.RecordMapper;
+import nanodb.mapper.ResultsetAccessor;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class EntityRecordMapper<E extends Persistable> implements RecordMapper<E> {
@@ -54,7 +54,7 @@ public class EntityRecordMapper<E extends Persistable> implements RecordMapper<E
 
 	}
 	/**
-	 * @see com.ibm.next.mam.persistence.mapper.RecordMapper#map(java.sql.ResultSet)
+	 * @see nanodb.mapper.RecordMapper#map(java.sql.ResultSet)
 	 */
 	public E map(ResultSet resultSet) throws SQLException, PersistenceException {
 		E entity = null;

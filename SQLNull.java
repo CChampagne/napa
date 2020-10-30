@@ -1,11 +1,11 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 /**
  * class allowing t
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public final class SQLNull {

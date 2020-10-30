@@ -1,19 +1,19 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ibm.next.mam.persistence.impl.EntityDaoFactoryImpl;
-import com.ibm.next.mam.persistence.impl.db2e.DB2eEntityDaoFactory;
-import com.ibm.next.mam.persistence.impl.sqlite.SQLiteEntityDaoFactory;
+import nanodb.impl.EntityDaoFactoryImpl;
+import nanodb.impl.db2e.DB2eEntityDaoFactory;
+import nanodb.impl.sqlite.SQLiteEntityDaoFactory;
 
 /**
  * Class retrieving the default factory implementation for specific databases 
  * 
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class EntityDaoFactoryHelper {

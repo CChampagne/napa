@@ -1,22 +1,22 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.sql.Types;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.persistence.annotations.DBField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.annotations.atk.EntityIndex;
-import com.ibm.next.mam.persistence.entity.Persistable;
+import nanodb.exceptions.AnnotationException;
+import nanodb.annotations.DBField;
+import nanodb.annotations.atk.EntityField;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.annotations.atk.EntityIndex;
+import nanodb.entity.Persistable;
 import com.ibm.next.mam.util.Conditions;
 import com.sap.ip.me.api.logging.Severities;
 import com.sap.ip.me.api.logging.Trace;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public class SQLTableCreationScriptsGenerator {

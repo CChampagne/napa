@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.annotations;
+package nanodb.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * This can also be set with the {@link DBField} annotation but it is overridden by this one
  *
  *
- * @author Christophe Champagne GII561
+ * @author Christophe Champagne Christophe Champagne
  *
  */
 @Target(value={ElementType.METHOD,ElementType.FIELD})

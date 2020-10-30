@@ -1,7 +1,7 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * The Connection provider is intended to create a connection or reset it
  * (close the current connection and then recreate a new one)
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  */
 public interface ConnectionProvider {

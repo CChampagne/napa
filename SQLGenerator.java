@@ -1,20 +1,17 @@
-/**
- * 
- */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 import java.util.List;
 
-import com.ibm.next.mam.errorframework.exceptions.persistence.AnnotationException;
-import com.ibm.next.mam.persistence.annotations.atk.EntityField;
-import com.ibm.next.mam.persistence.annotations.atk.EntityHandler;
-import com.ibm.next.mam.persistence.entity.Persistable;
+import nanodb.exceptions.AnnotationException;
+import nanodb.annotations.atk.EntityField;
+import nanodb.annotations.atk.EntityHandler;
+import nanodb.entity.Persistable;
 
 /**
- * @author GII561
+ * @author Christophe Champagne
  *
  */
-public class SQLGenerator<T extends Persistable> {
+public class SQLGenerator<T> {
 	
 	//
 	private String selectAll;

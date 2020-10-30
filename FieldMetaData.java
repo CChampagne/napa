@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.ibm.next.mam.persistence;
+package nanodb;
 
 /**
- * @author GII561
+ * @author Christophe Champagne
  * This class represents a field's metadata. 
  */
 public interface FieldMetaData {

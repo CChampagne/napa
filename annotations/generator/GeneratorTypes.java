@@ -1,10 +1,10 @@
 /**
- * by Christophe Champagne (GII561)
+ * by Christophe Champagne
  */
-package com.ibm.next.mam.persistence.annotations.generator;
+package nanodb.annotations.generator;
 
 /**
- * @author Christophe Champagne (GII561)
+ * @author Christophe Champagne
  *
  * This interface enumerates the types of generators
  * supported by default by persistence framework.
