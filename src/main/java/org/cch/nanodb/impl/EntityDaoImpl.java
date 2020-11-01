@@ -181,7 +181,7 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 								|| (operation == Operation.UPDATE && annotation.generateAlsoOnUpdate())){
 							field.getGenerator().setFactory(this.factory);
 							val = field.getGenerator().getNextValue();
-							//Commit on the com.cch.nanodb.entity
+							//Commit on the org.cch.nanodb.entity
 							//TODO do this AFTER DB commit in order to keep data consistent
 							field.set(entity, val);
 						}

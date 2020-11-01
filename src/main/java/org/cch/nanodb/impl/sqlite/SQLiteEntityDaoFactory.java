@@ -9,7 +9,6 @@ import org.cch.nanodb.exceptions.AnnotationException;
 import org.cch.nanodb.exceptions.PersistenceException;
 import org.cch.nanodb.EntityDao;
 import org.cch.nanodb.SQLTypeMapper;
-import org.cch.nanodb.entity.Persistable;
 import org.cch.nanodb.impl.EntityDaoFactoryImpl;
 
 /**

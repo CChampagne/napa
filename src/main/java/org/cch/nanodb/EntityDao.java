@@ -19,11 +19,11 @@ import java.util.List;
  */
 public interface EntityDao<E> {
 	/**
-	 * Select an com.cch.nanodb.entity by giving another instance of the com.cch.nanodb.entity having the the fields
+	 * Select an org.cch.nanodb.entity by giving another instance of the org.cch.nanodb.entity having the the fields
 	 * annotated by @code@Id correctly filled.
 	 * @param entityParameter
-	 * @return the populated com.cch.nanodb.entity
-	 * @throws PersistenceException thrown when there is an issue related to the persistence but not to com.cch.nanodb.jdbc
+	 * @return the populated org.cch.nanodb.entity
+	 * @throws PersistenceException thrown when there is an issue related to the persistence but not to org.cch.nanodb.jdbc
 	 * @throws SQLException thrown when a java.sql.SQLException is thrown in executing the select query
 	 * 
 	 */
@@ -31,19 +31,19 @@ public interface EntityDao<E> {
 	
 	/**
 	 * Select all entities available in the corresponding table.
-	 * @return the populated com.cch.nanodb.entity
+	 * @return the populated org.cch.nanodb.entity
 	 */
 	public List<E> selectAll() throws PersistenceException, SQLException;
 	
 	/**
-	 * Select an com.cch.nanodb.entity by giving another instance of the com.cch.nanodb.entity having the the fields
+	 * Select an org.cch.nanodb.entity by giving another instance of the org.cch.nanodb.entity having the the fields
 	 * annotated by @code@Id correctly filled.
-	 * @return the populated com.cch.nanodb.entity
+	 * @return the populated org.cch.nanodb.entity
 	 */
 	public List<E> select(String query, Object...parameters) throws PersistenceException, SQLException;
 	
 	/**
-	 * Inserts an com.cch.nanodb.entity
+	 * Inserts an org.cch.nanodb.entity
 	 * @param entity
 	 * @throws PersistenceException
 	 * @throws SQLException
@@ -51,7 +51,7 @@ public interface EntityDao<E> {
 	public void insert(E entity) throws PersistenceException, SQLException;
 	
 	/**
-	 * Updates an com.cch.nanodb.entity
+	 * Updates an org.cch.nanodb.entity
 	 * @param entity
 	 * @throws PersistenceException
 	 * @throws SQLException
@@ -59,7 +59,7 @@ public interface EntityDao<E> {
 	public void update(E entity) throws PersistenceException, SQLException;	
 	
 	/**
-	 * Inserts or Updates an com.cch.nanodb.entity
+	 * Inserts or Updates an org.cch.nanodb.entity
 	 * It can have so performance cost since there could be a check against the DB
 	 * @param entity
 	 * @throws PersistenceException
@@ -68,7 +68,7 @@ public interface EntityDao<E> {
 	public void persist(E entity) throws PersistenceException, SQLException;
 
 	/**
-	 * Deletes the record corresponding to the com.cch.nanodb.entity.
+	 * Deletes the record corresponding to the org.cch.nanodb.entity.
 	 * @param entity
 	 * @throws PersistenceException
 	 * @throws SQLException
@@ -94,7 +94,7 @@ public interface EntityDao<E> {
 	public long count(String query, Object...parameters) throws PersistenceException, SQLException;
 	/**
 	 * 
-	 * @return the class of the com.cch.nanodb.entity implementation
+	 * @return the class of the org.cch.nanodb.entity implementation
 	 */
 	public Class<? extends E> getEntityClass();
 }

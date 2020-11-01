@@ -8,7 +8,6 @@ import org.cch.nanodb.exceptions.PersistenceException;
 import org.cch.nanodb.ConnectionProvider;
 import org.cch.nanodb.EntityDaoFactory;
 import org.cch.nanodb.annotations.atk.EntityField;
-import org.cch.nanodb.entity.Persistable;
 import org.cch.nanodb.impl.EntityDaoImpl;
 
 /**

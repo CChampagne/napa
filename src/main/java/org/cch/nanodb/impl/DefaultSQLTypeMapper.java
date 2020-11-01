@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb.impl;
 
 import java.io.ByteArrayInputStream;
@@ -24,15 +21,12 @@ import org.cch.nanodb.SQLTypeMapper;
 import org.cch.nanodb.exceptions.PersistenceException;
 import org.cch.nanodb.SQLNull;
 import org.cch.nanodb.annotations.DBField;
-import org.cch.nanodb.mapper.ResultsetAccessor;
-import com.sap.ip.me.api.logging.Severities;
-import com.sap.ip.me.api.logging.Trace;
+import org.cch.nanodb.mapper.ResultSetAccessor;
 /**
  * @author Christophe Champagne
  *
  */
 public class DefaultSQLTypeMapper implements SQLTypeMapper {
-	private static Trace TRACE = Trace.getInstance(DefaultSQLTypeMapper.class.getName());
 	
 	/**
 	 * @see SQLTypeMapper#getSqlTypeFromClass(java.lang.Class)
@@ -93,24 +87,24 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		return DBField.DEFAULT;
 	}
 	/**
-	 * @see SQLTypeMapper#getResulsetGetterFromClass(java.lang.Class, int)
+	 * @see SQLTypeMapper#getResultSetGetterFromClass(java.lang.Class, int)
 	 */
-	public  ResultsetAccessor getResulsetGetterFromClass(final Class<?>cls, int sqlType){
-		ResultsetAccessor resulsetGetter = null;
+	public  ResultSetAccessor getResultSetGetterFromClass(final Class<?>cls, int sqlType){
+		ResultSetAccessor resultSetGetter = null;
 		if((cls.equals(Object.class) || cls.equals(Serializable.class)) && sqlType!=Types.BLOB){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Object getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getObject(columnName);
 				}				
 			};
 		}  else if (cls.equals(String.class) || CharSequence.class.isAssignableFrom(cls)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public String getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getString(columnName);
 				}				
 			};			
 		} else if (cls.equals(Integer.class) || cls.equals(Integer.TYPE)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Integer getValue(ResultSet resultSet, String columnName) throws SQLException {
 					int val = resultSet.getInt(columnName);
 					if(resultSet.wasNull()){
@@ -120,7 +114,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 				}				
 			};			
 		} else if (cls.equals(Long.class) || cls.equals(Long.TYPE)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Long getValue(ResultSet resultSet, String columnName) throws SQLException {
 					long val = resultSet.getLong(columnName);
 					if(resultSet.wasNull()){
@@ -130,7 +124,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 				}				
 			};			
 		} else if (cls.equals(Short.class)  || cls.equals(Short.TYPE)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Short getValue(ResultSet resultSet, String columnName) throws SQLException {
 					short val = resultSet.getShort(columnName);
 					if(resultSet.wasNull()){
@@ -140,7 +134,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 				}				
 			};			
 		} else if (cls.equals(Double.class) || cls.equals(Double.TYPE)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Double getValue(ResultSet resultSet, String columnName) throws SQLException {
 					double val = resultSet.getDouble(columnName);
 					if(resultSet.wasNull()){
@@ -150,7 +144,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 				}				
 			};			
 		}  else if (cls.equals(Float.class) || cls.equals(Float.TYPE)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Float getValue(ResultSet resultSet, String columnName) throws SQLException {
 					double val = resultSet.getFloat(columnName);
 					if(resultSet.wasNull()){
@@ -160,13 +154,13 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 				}				
 			};			
 		}  else if (cls.equals(BigDecimal.class)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public BigDecimal getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getBigDecimal(columnName);
 				}				
 			};			
 		} else if (cls.equals(Boolean.class) || cls.equals(Boolean.TYPE)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Boolean getValue(ResultSet resultSet, String columnName) throws SQLException {
 					int val = resultSet.getInt(columnName);
 					if(resultSet.wasNull()){
@@ -177,25 +171,25 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 			};			
 		} else if (cls.equals(Timestamp.class) 
 				||(cls.equals(Date.class) && (sqlType == Types.TIMESTAMP || sqlType == Types.NULL))){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Date getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getTimestamp(columnName);
 				}				
 			};			
 		} else if ((cls.equals(java.sql.Date.class)) || (cls.equals(Date.class) && sqlType == Types.DATE)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Date getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getDate(columnName);
 				}				
 			};			
 		} else if ((cls.equals(Time.class)) || (cls.equals(Date.class) && sqlType == Types.TIME)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Date getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getTime(columnName);
 				}				
 			};			
 		} else if (Calendar.class.isAssignableFrom(cls)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Calendar getValue(ResultSet resultSet, String columnName) throws SQLException {
 					Date date = resultSet.getTimestamp(columnName);
 					Calendar cal = null;
@@ -207,34 +201,36 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 				}				
 			};			
 		} else if (cls.isEnum()){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				@SuppressWarnings({ "unchecked", "rawtypes" })
 				public Enum<?> getValue(ResultSet resultSet, String columnName) throws SQLException {
 					String val = resultSet.getString(columnName);
+					if (val == null) return null;
 					Enum<?>valAsEnum = null;
 					try {
 						valAsEnum = Enum.valueOf((Class<? extends Enum>)cls, val);
 					} catch (Exception e) {
-						TRACE.logException("Cannot convert '" + val +"' string to " + cls.getName()+ " enumeration",e, false);;
+						//TODO allow to be stricter by config and throw exception
+						System.err.println("Cannot convert '" + val +"' string to " + cls.getName()+ " enumeration");
 					}
 					return valAsEnum;
 				}				
 			};			
 		} else if (cls.equals(Blob.class)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public Blob getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getBlob(columnName);
 				}				
 			};			
 		} else if (Serializable.class.isAssignableFrom(cls)){
-			resulsetGetter =  getResultsetBlobAccessor();
+			resultSetGetter =  getResultSetBlobAccessor();
 		}
-		return resulsetGetter;
+		return resultSetGetter;
 	}
 	
 	public void setParameter(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException{
 		if(value == null){
-			//Null parameter given to statement! This may cause dysfunctionments (depends on DB
+			//Null parameter given to statement! This may cause dysfunction's (depends on DB)
 			statement.setObject(index, null);
 		}else if (value.getClass().isArray()){
 			statement.setNull(index, ((SQLNull)value).getSqlType());
@@ -271,9 +267,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		}else if (value instanceof Serializable){//lets make it a blob
 			setBlob(statement, value, index);
 		}else{
-			TRACE.log(Severities.WARNING, "Could not find corresponding type of parameter #"+ index + " : "+ value);
-			//TODO raise exception?
-			//statement.setTimestamp(index, new Timestamp(((Calendar)value).getTime().getTime()));					
+			throw new PersistenceException("Could not find corresponding type of parameter #"+ index + " : "+ value);
 		}
 
 	}
@@ -289,30 +283,26 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 			bas = new ByteArrayInputStream(content);
 			statement.setBinaryStream(index, bas, content.length);
 		} catch (IOException e) {
-			TRACE.logException(Severities.ERROR, e);
-			throw new PersistenceException();
+			throw new PersistenceException(e);
 		} catch (Exception e) {
-			TRACE.logException(Severities.FATAL, e);
-			throw new PersistenceException();
+			throw new PersistenceException(e);
 		} finally {
 	        try {
 				oos.close();
 			} catch (IOException e) {
-				TRACE.logException(Severities.WARNING, "Could not close the queue inputStream", e, true);
-				throw new PersistenceException();
+				throw new PersistenceException("Could not close the queue inputStream", e);
 			}			
 		}
 	}
 
-	protected ResultsetAccessor getResultsetBlobAccessor(){
-		return new AbstractResultsetGetter(){
+	protected ResultSetAccessor getResultSetBlobAccessor(){
+		return new AbstractResultSetGetter(){
 			public Serializable getValue(ResultSet resultSet, String columnName) throws SQLException, PersistenceException {
 				Serializable serializable = null;
 				try {
 					serializable = deserializeBlob(resultSet.getBlob(columnName));
 				} catch (IOException e) {
-					TRACE.logException(Severities.ERROR,"Could not deserialize column " + columnName, e, false);
-					throw new PersistenceException(e);
+					throw new PersistenceException("Could not deserialize column " + columnName, e);
 				}
 				return serializable;
 			}				

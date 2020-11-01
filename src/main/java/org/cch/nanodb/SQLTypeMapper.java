@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.cch.nanodb.exceptions.PersistenceException;
-import org.cch.nanodb.mapper.ResultsetAccessor;
+import org.cch.nanodb.mapper.ResultSetAccessor;
 
 /**
  * @author Christophe Champagne
@@ -21,7 +21,7 @@ public interface SQLTypeMapper {
 
 	public abstract int getPrecisionFromType(int type);
 
-	public abstract ResultsetAccessor getResulsetGetterFromClass(Class<?> cls,
+	public abstract ResultSetAccessor getResultSetGetterFromClass(Class<?> cls,
 			int sqlType);
 	
 	public abstract void setParameter(PreparedStatement statement, int index, Object value)throws SQLException, PersistenceException;

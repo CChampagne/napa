@@ -150,7 +150,7 @@ public class SQLTableCreationScriptsGenerator {
 	}
 	/**
 	 * Generate statement to add a field on a table
-	 * @param entityClass class of the com.cch.nanodb.entity representing the table
+	 * @param entityClass class of the org.cch.nanodb.entity representing the table
 	 * @param fieldName 
 	 * @return null if the field cannot be extracted from the class
 	 * @throws AnnotationException
@@ -169,7 +169,7 @@ public class SQLTableCreationScriptsGenerator {
 	}
 	/**
 	 * generate index
-	 * @param entityClass
+	 * @param index
 	 * @return
 	 * @throws AnnotationException
 	 */

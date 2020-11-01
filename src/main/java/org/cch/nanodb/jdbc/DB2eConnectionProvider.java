@@ -10,20 +10,29 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.cch.nanodb.ConnectionProvider;
-import com.ibm.db2e.jdbc.DB2eDriver;
-import com.ibm.next.mam.config.Configuration;
-import com.ibm.next.mam.util.ConstantsProperties;
 
 /**
  * @author Christophe Champagne
  *
  */
-public class OresDB2eConnectionProvider implements ConnectionProvider {
+public class DB2eConnectionProvider implements ConnectionProvider {
 	private Connection connection;
 	private String user;
 	private String password;
 	private String connectionString;
 	private Map<?, ?> additionalParameters;
+
+	public DB2eConnectionProvider(String connectionString, String user, String password,
+									  Map<?, ?> additionalParameters) {
+		init(connectionString, user, password, additionalParameters);
+	}
+	private void init(String connectionString, String user, String password,
+					  Map<?, ?> additionalParameters) {
+		this.connectionString = connectionString;
+		this.user = user;
+		this.password = password;
+		this.additionalParameters = additionalParameters;
+	}
 	public Connection resetConnection() throws SQLException {
 		close();
 		return getConnection();
@@ -31,18 +40,7 @@ public class OresDB2eConnectionProvider implements ConnectionProvider {
 
 	public synchronized Connection getConnection() throws SQLException {
 		if(connection == null){
-			Configuration config = Configuration.getInstance();
-			if(connectionString == null) {
-				connectionString =  config.getProperty(ConstantsProperties.DB_CONNECTION_STRING);
-			}			
-			//
-			if(user == null) {
-				user =  config.getProperty(ConstantsProperties.DB_USER);
-			}
-			if(password == null){
-				password =   config.getProperty(ConstantsProperties.DB_PASSWORD);
-			}
-			
+
 			Properties p = new Properties();
 			p.put("user", user);
 			p.put("password", password);
@@ -53,8 +51,14 @@ public class OresDB2eConnectionProvider implements ConnectionProvider {
 			} else {
 				p.putAll(additionalParameters);
 			}
-			Driver driver = new DB2eDriver();
-			connection = driver.connect(connectionString, p);;						
+			try {
+				Class<?> cls = Class.forName("com.ibm.db2e.jdbc.DB2eDriver");
+				Driver driver = (Driver)cls.getConstructor().newInstance();
+				connection = driver.connect(connectionString, p);;
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+
 		}
 		return connection;
 	}
@@ -71,15 +75,5 @@ public class OresDB2eConnectionProvider implements ConnectionProvider {
 		}
 	}
 
-	/**
-	 * @see ConnectionProvider#resetConnection(java.lang.String, java.lang.String, java.lang.String, java.util.Map)
-	 */
-	public Connection resetConnection(String connectionString, String user, String password,
-			Map<?, ?> additionalParameters) throws SQLException {
-		this.connectionString = connectionString;
-		this.user = user;
-		this.password = password;
-		this.additionalParameters = additionalParameters;
-		return resetConnection();
-	}
+
 }

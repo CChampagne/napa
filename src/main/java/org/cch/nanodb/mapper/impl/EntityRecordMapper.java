@@ -2,7 +2,6 @@ package org.cch.nanodb.mapper.impl;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -14,7 +13,7 @@ import org.cch.nanodb.SQLTypeMapper;
 import org.cch.nanodb.annotations.atk.EntityField;
 import org.cch.nanodb.annotations.atk.EntityHandler;
 import org.cch.nanodb.mapper.RecordMapper;
-import org.cch.nanodb.mapper.ResultsetAccessor;
+import org.cch.nanodb.mapper.ResultSetAccessor;
 
 /**
  * @author Christophe Champagne
@@ -22,34 +21,34 @@ import org.cch.nanodb.mapper.ResultsetAccessor;
  */
 public class EntityRecordMapper<E> implements RecordMapper<E> {
 	private static Map<Class<? extends EntityDaoFactory>,
-	Map<Class<?>, Map<String, ResultsetAccessor>>>resultsetGettersPerFactory
-	= new Hashtable<Class<? extends EntityDaoFactory>, Map<Class<?>,Map<String,ResultsetAccessor>>>();
+	Map<Class<?>, Map<String, ResultSetAccessor>>>resultSetGettersPerFactory
+	= new Hashtable<Class<? extends EntityDaoFactory>, Map<Class<?>,Map<String,ResultSetAccessor>>>();
 
 	
 	private Class<E> entityClass;
 	private EntityHandler<E> entityHandler;
-	private Map<String, ResultsetAccessor>resultsetGetters;
+	private Map<String, ResultSetAccessor> resultSetGetters;
 	
 	public EntityRecordMapper(Class<E> entityClass, EntityDaoFactory factory) throws AnnotationException {
 		this.entityClass = entityClass;
 		this.entityHandler = factory.getEntityHandler(entityClass);
-		Map<Class<?>, Map<String,ResultsetAccessor>> resultSetPerPersitable = resultsetGettersPerFactory.get(factory.getClass());
-		if(resultSetPerPersitable == null){
-			resultSetPerPersitable = new HashMap<Class<?>, Map<String,ResultsetAccessor>>();
-			resultsetGettersPerFactory.put(factory.getClass(), resultSetPerPersitable);
+		Map<Class<?>, Map<String,ResultSetAccessor>> resultSetPerPersistable = resultSetGettersPerFactory.get(factory.getClass());
+		if(resultSetPerPersistable == null){
+			resultSetPerPersistable = new HashMap<Class<?>, Map<String,ResultSetAccessor>>();
+			resultSetGettersPerFactory.put(factory.getClass(), resultSetPerPersistable);
 		} else {
-			this.resultsetGetters = resultSetPerPersitable.get(entityClass);
+			this.resultSetGetters = resultSetPerPersistable.get(entityClass);
 		}
-		if(this.resultsetGetters == null){
-			this.resultsetGetters = getResulsetGetters(entityHandler, factory);
-			resultSetPerPersitable.put(entityClass, resultsetGetters);
+		if(this.resultSetGetters == null){
+			this.resultSetGetters = getResultSetGetters(entityHandler, factory);
+			resultSetPerPersistable.put(entityClass, resultSetGetters);
 		}
 
 	}
 	/**
 	 * @see RecordMapper#map(java.sql.ResultSet)
 	 */
-	public E map(ResultSet resultSet) throws SQLException, PersistenceException {
+	public E map(ResultSet resultSet) throws PersistenceException {
 		E entity = null;
 		String name = null;
 		try {
@@ -59,35 +58,34 @@ public class EntityRecordMapper<E> implements RecordMapper<E> {
 				name = metaData.getColumnName(index);
 				EntityField entityField = entityHandler.getEntityField(name);
 				if(entityField != null){
-					ResultsetAccessor resultsetGetter = resultsetGetters.get(entityField.getDBFieldName());
-					if(resultsetGetter!=null){
-						Object value = resultsetGetter.getValueFromResultSet(resultSet, entityField.getDBFieldName());
+					ResultSetAccessor resultSetGetter = resultSetGetters.get(entityField.getDBFieldName());
+					if(resultSetGetter!=null){
+						Object value = resultSetGetter.getValueFromResultSet(resultSet, entityField.getDBFieldName());
 						entityField.set(entity, value);
 					} else {
-						TRACE.log(Severities.ERROR, "No resultset getter for " + name + " field");
+						System.err.println("No resultSet getter for " + name + " field");
 					}
 				}
 				//TODO remove the else or at least make the warnings only appear once per field
 				else {
-					TRACE.log(Severities.WARNING,"Cannot find entityField for DBField " + name);
+					System.err.println("Cannot find entityField for DBField " + name);
 				}
 			}
 		} catch (Exception e) {
-			TRACE.log(Severities.ERROR, "Problem while processing field " + name);
-			throw new PersistenceException(e);
+			throw new PersistenceException("Problem while processing field " + name, e);
 		}
 
 		return entity;
 	}
 	
-	private synchronized static <E> Map<String, ResultsetAccessor> getResulsetGetters(EntityHandler<E> entityHandler, EntityDaoFactory factory){
-		Map<String, ResultsetAccessor>resultsetGetters = new HashMap<String, ResultsetAccessor>();
+	private synchronized static <E> Map<String, ResultSetAccessor> getResultSetGetters(EntityHandler<E> entityHandler, EntityDaoFactory factory){
+		Map<String, ResultSetAccessor>resultSetGetters = new HashMap<String, ResultSetAccessor>();
 		SQLTypeMapper typeMapper = factory.getSqlTypeMapper();
 		for(EntityField entityField:entityHandler.getEntityFields()){
-			resultsetGetters.put(entityField.getDBFieldName(),
-					typeMapper.getResulsetGetterFromClass(entityField.getJavaType(), entityField.getSqlType()));
+			resultSetGetters.put(entityField.getDBFieldName(),
+					typeMapper.getResultSetGetterFromClass(entityField.getJavaType(), entityField.getSqlType()));
 		}
-		return resultsetGetters;
+		return resultSetGetters;
 	}
 
 }

@@ -90,7 +90,7 @@ public class EntityHandler<T>{
 	}
 	
 	/**
-	 * Analyses the com.cch.nanodb.entity class in order to get the meta data (FieldName, type...)
+	 * Analyses the org.cch.nanodb.entity class in order to get the meta data (FieldName, type...)
 	 * necessary for persistence
 	 * @throws AnnotationException 
 	 */
@@ -135,7 +135,7 @@ public class EntityHandler<T>{
 				if(entityField.getField() == null && (entityField.getSetter() == null || entityField.getGetter() == null)){
 					Field field = lookupFieldInAncestors(entityField.getFieldName(), entityField.getDBFieldName());
 					if(field != null){
-						entityField.setField(field);//TODO analyse com.cch.nanodb.annotations by try to not override existing...
+						entityField.setField(field);//TODO analyse org.cch.nanodb.annotations by try to not override existing...
 					}
 				}
 				if(entityField.getJavaType().isPrimitive()){

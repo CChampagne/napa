@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Christophe Champagne
- * This annotation can be used to be set as parameter of other com.cch.nanodb.annotations
+ * This annotation can be used to be set as parameter of other org.cch.nanodb.annotations
  */
 @Target(value={ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)

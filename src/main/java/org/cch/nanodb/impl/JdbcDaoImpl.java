@@ -15,15 +15,10 @@ import org.cch.nanodb.EntityDaoFactory;
 import org.cch.nanodb.JdbcDao;
 import org.cch.nanodb.SQLTypeMapper;
 import org.cch.nanodb.mapper.RecordMapper;
-import com.ibm.next.mam.util.ObjectDisplayer;
-import com.sap.ip.me.api.logging.Severities;
-import com.sap.ip.me.api.logging.Trace;
 
 public class JdbcDaoImpl implements JdbcDao {
-	private static final Trace TRACE = Trace.getInstance(JdbcDaoImpl.class.getName());
 	private ConnectionProvider connectionProvider;
 	private SQLTypeMapper sqlTypeMapper;
-	private ObjectDisplayer objectDisplayer = new ObjectDisplayer();
 	
 	public JdbcDaoImpl(ConnectionProvider connectionProvider, EntityDaoFactory factory) {
 		this.connectionProvider = connectionProvider;
@@ -32,10 +27,10 @@ public class JdbcDaoImpl implements JdbcDao {
 	public JdbcDaoImpl(EntityDaoFactory factory) {
 		this(ConnectionProviderHelper.getConnectionProvider(factory.getClass()), factory);
 	}
-	/* (non-Javadoc)
-	 * @see com.cch.nanodb.JdbcDao#select(java.lang.String, org.cch.nanodb.com.cch.nanodb.mapper.RecordMapper, java.lang.Object)
+	/**
+	 * @see org.cch.nanodb.JdbcDao#select(java.lang.String, org.cch.nanodb.mapper.RecordMapper, java.lang.Object[])
 	 */
-	public <T> List<T> select(String query, RecordMapper<T> mapper,Object...parameters) throws SQLException, PersistenceException{
+	public <T> List<T> select(String query, RecordMapper<T> mapper,Object...parameters) throws PersistenceException{
 		List<T> list = new ArrayList<T>();
 		PreparedStatement statement = null;
 		try{
@@ -46,26 +41,22 @@ public class JdbcDaoImpl implements JdbcDao {
 				list.add(item);
 			}
 		}catch(java.sql.SQLException e){
-			traceQuery(e, query, parameters);
-			throw new SQLException(e);
+			throw new SQLException("Failed\n"+ queryAndParametersToText(query, parameters), e);
 		} finally {
 			if(statement != null){
 				try {
 					statement.close();
 				} catch (java.sql.SQLException e) {
-					TRACE.logException(Severities.WARNING, "Could not close statement",e,true);
+					e.printStackTrace();
 				}
 			}
 		}
 		return list;
 	}
-	/* (non-Javadoc)
-	 * @see com.cch.nanodb.JdbcDao#prepareStatement(java.lang.String, java.lang.Object)
+	/**
+	 * @see org.cch.nanodb.JdbcDao#prepareStatement(java.lang.String, java.lang.Object[])
 	 */
 	public PreparedStatement prepareStatement(String query, Object...parameters) throws PersistenceException{
-		if(TRACE.isLogging(Severities.DEBUG)){
-			TRACE.log(Severities.DEBUG, queryAndParametersToText(query, parameters));
-		}
 		PreparedStatement statement = null;
 		try {
 			Connection connection = connectionProvider.getConnection();
@@ -78,7 +69,7 @@ public class JdbcDaoImpl implements JdbcDao {
 				}
 			}
 		} catch (java.sql.SQLException e) {
-			throw new SQLException(e);
+			throw new SQLException("Failed to prepare statement of\n"+ queryAndParametersToText(query, parameters),e);
 		}
 		return statement;
 	}
@@ -92,7 +83,7 @@ public class JdbcDaoImpl implements JdbcDao {
 //		return blob;
 //	}
 	/* (non-Javadoc)
-	 * @see com.cch.nanodb.JdbcDao#executeUpdate(java.lang.String, java.lang.Object)
+	 * @see org.cch.nanodb.JdbcDao#executeUpdate(java.lang.String, java.lang.Object)
 	 */
 	public void executeUpdate(String query, Object...parameters) throws PersistenceException{
 		PreparedStatement statement = null;
@@ -103,33 +94,29 @@ public class JdbcDaoImpl implements JdbcDao {
 				statement.getConnection().commit();
 			}
 		} catch(java.sql.SQLException e){
-			traceQuery(e, query, parameters);
+			String trace = "\n" + queryAndParametersToText(query, parameters);
 			if(statement != null){
 				try {
 					if(!statement.getConnection().getAutoCommit()){
 						statement.getConnection().rollback();
 					}
 				} catch (java.sql.SQLException e1) {
-					throw new SQLException(e1);
+					throw new SQLException("Could not rollback " + trace, e1);
 				}
 			}
-			throw new SQLException(e);
+			throw new SQLException("Exception while executing " + trace, e);
 		} finally {
 			if(statement != null){
 				try {
 					statement.close();
 				} catch (java.sql.SQLException e) {
-					TRACE.logException(Severities.WARNING, "Could not close statement",e,true);
+					System.err.println("Could not close statement");
+					e.printStackTrace();
 				}
 			}
 		}
 	}
 
-	private void traceQuery(Exception e ,String query, Object...parameters){
-		TRACE.logException(Severities.ERROR,"SQL error while executing The following query (" + e + ")", e, false);
-		TRACE.log(Severities.ERROR,"Parameters : " + queryAndParametersToText(query, parameters));
-
-	}
 	private String queryAndParametersToText(String query, Object...parameters){
 		StringBuffer params = new StringBuffer(query);
 		params.append('\n');
@@ -138,11 +125,14 @@ public class JdbcDaoImpl implements JdbcDao {
 			params.append("Parameter #");
 			params.append(index++);
 			params.append(" = ");
-			try {
-				objectDisplayer.append(parameter, params);
-			} catch (IOException ex) {
+			if (parameter == null)
+				params.append("NULL");
+			else if (parameter instanceof CharSequence)
+				params.append("'" + parameter + "'");
+			else if (parameter instanceof Number || parameter instanceof Boolean || parameter.getClass().isPrimitive())
 				params.append(parameter);
-			}
+			else
+				params.append("{" + parameter + "}");
 			params.append('\n');
 		}
 		return params.toString();

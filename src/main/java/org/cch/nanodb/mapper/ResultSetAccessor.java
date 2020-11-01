@@ -12,6 +12,6 @@ import org.cch.nanodb.exceptions.PersistenceException;
  *
  */
 
-public interface ResultsetAccessor{
+public interface ResultSetAccessor{
 	public Object getValueFromResultSet(ResultSet resultSet, String columnName) throws PersistenceException;
 }

@@ -30,7 +30,7 @@ public class EntityDaoFactoryHelper {
 		String dbType = null;
 		if(connectionString != null){
 			//a connection String is structured as this:
-			//com.cch.nanodb.jdbc:db_type:SomespecificStrings...
+			//org.cch.nanodb.jdbc:db_type:SomespecificStrings...
 			//The aim is to retrieve dbtype so it can be used to determine factory implementation
 			int posBegin  = connectionString.indexOf(':');
 			if(posBegin > -1){

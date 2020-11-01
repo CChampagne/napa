@@ -9,13 +9,12 @@ import org.cch.nanodb.EntityDaoFactory;
 import org.cch.nanodb.annotations.GeneratedValue;
 import org.cch.nanodb.annotations.atk.EntityField;
 import org.cch.nanodb.annotations.atk.EntityHandler;
-import org.cch.nanodb.entity.Persistable;
 
 /**
  * @author Christophe Champagne
  * Interface of a generator use
  */
-public interface Generator{
+public interface Generator {
 	/**
 	 * 
 	 * @return gives the next value 

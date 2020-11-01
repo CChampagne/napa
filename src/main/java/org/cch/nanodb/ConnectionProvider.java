@@ -25,11 +25,6 @@ public interface ConnectionProvider {
 	 */
 	public Connection resetConnection() throws SQLException;
 	/**
-	 * Closes the current connection(s) and creates an new one;
-	 * @return the new Connection
-	 */
-	public Connection resetConnection(String connectionString, String user, String password, Map<?, ?> additionalParameters) throws SQLException;
-	/**
 	 * Closes any current connection;
 	 */
 	public void close() throws SQLException;

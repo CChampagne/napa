@@ -7,7 +7,6 @@ import org.cch.nanodb.annotations.GeneratedValue;
 import org.cch.nanodb.annotations.atk.EntityField;
 import org.cch.nanodb.annotations.atk.EntityHandler;
 import org.cch.nanodb.annotations.generator.Generator;
-import org.cch.nanodb.entity.Persistable;
 
 /**
  * @author Christophe Champagne

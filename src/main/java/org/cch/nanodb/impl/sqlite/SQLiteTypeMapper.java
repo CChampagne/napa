@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb.impl.sqlite;
 
 import java.io.ByteArrayInputStream;
@@ -16,26 +13,22 @@ import java.sql.SQLException;
 
 import org.cch.nanodb.SQLTypeMapper;
 import org.cch.nanodb.exceptions.PersistenceException;
-import org.cch.nanodb.impl.AbstractResultsetGetter;
+import org.cch.nanodb.impl.AbstractResultSetGetter;
 import org.cch.nanodb.impl.DefaultSQLTypeMapper;
-import org.cch.nanodb.mapper.ResultsetAccessor;
-import com.sap.ip.me.api.logging.Severities;
-import com.sap.ip.me.api.logging.Trace;
+import org.cch.nanodb.mapper.ResultSetAccessor;
 
 /**
  * @author Christophe Champagne
  *
  */
 public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
-	private static Trace TRACE = Trace.getInstance(SQLiteTypeMapper.class.getName());
-	
 	/**
-	 * @see SQLTypeMapper#getResulsetGetterFromClass(java.lang.Class, int)
+	 * @see SQLTypeMapper#getResultSetGetterFromClass(java.lang.Class, int)
 	 */
-	public ResultsetAccessor getResulsetGetterFromClass(Class<?>cls, int sqlType){
-		ResultsetAccessor resulsetGetter = null;
+	public ResultSetAccessor getResultSetGetterFromClass(Class<?>cls, int sqlType){
+		ResultSetAccessor resultSetGetter = null;
 		if (cls.equals(BigDecimal.class)){
-			resulsetGetter =  new AbstractResultsetGetter(){
+			resultSetGetter =  new AbstractResultSetGetter(){
 				public BigDecimal getValue(ResultSet resultSet, String columnName) throws SQLException {
 					double val = resultSet.getDouble(columnName);
 					BigDecimal value = null;
@@ -46,9 +39,9 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 				}				
 			};			
 		} else {
-			resulsetGetter = super.getResulsetGetterFromClass(cls, sqlType);
+			resultSetGetter = super.getResultSetGetterFromClass(cls, sqlType);
 		} 
-		return resulsetGetter;
+		return resultSetGetter;
 	}
 	
 	public void setParameter(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException{
@@ -70,30 +63,26 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 			byte[] content = bos.toByteArray();
 			statement.setBytes(index, content);
 		} catch (IOException e) {
-			TRACE.logException(Severities.ERROR, e);
-			throw new PersistenceException();
+			throw new PersistenceException(e);
 		} catch (Exception e) {
-			TRACE.logException(Severities.FATAL, e);
-			throw new PersistenceException();
+			throw new PersistenceException(e);
 		} finally {
 	        try {
 	        	//bos closed when oos is closed
 				oos.close();
 			} catch (IOException e) {
-				TRACE.logException(Severities.WARNING, "Could not close the queue inputStream", e, true);
-				throw new PersistenceException();
+				throw new PersistenceException( "Could not close the queue inputStream", e);
 			}			
 		}
 	}
-	protected ResultsetAccessor getResultsetBlobAccessor(){
-		return new AbstractResultsetGetter(){
+	protected ResultSetAccessor getResultSetBlobAccessor(){
+		return new AbstractResultSetGetter(){
 			public Serializable getValue(ResultSet resultSet, String columnName) throws SQLException, PersistenceException {
 				Serializable serializable = null;
 				try {
 					serializable = deserializeBytes(resultSet.getBytes(columnName));
 				} catch (IOException e) {
-					TRACE.logException(Severities.ERROR,"Could not deserialize column " + columnName, e, false);
-					throw new PersistenceException(e);
+					throw new PersistenceException("Could not deserialize column " + columnName, e);
 				}
 				return serializable;
 			}				
