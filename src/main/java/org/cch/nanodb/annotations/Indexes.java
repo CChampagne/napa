@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb.annotations;
 
 import java.lang.annotation.ElementType;

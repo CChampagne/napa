@@ -10,7 +10,6 @@ import java.util.List;
 import org.cch.nanodb.exceptions.PersistenceException;
 import org.cch.nanodb.exceptions.SQLException;
 import org.cch.nanodb.ConnectionProvider;
-import org.cch.nanodb.ConnectionProviderHelper;
 import org.cch.nanodb.EntityDaoFactory;
 import org.cch.nanodb.JdbcDao;
 import org.cch.nanodb.SQLTypeMapper;
@@ -25,7 +24,7 @@ public class JdbcDaoImpl implements JdbcDao {
 		sqlTypeMapper = factory.getSqlTypeMapper();
 	}	
 	public JdbcDaoImpl(EntityDaoFactory factory) {
-		this(ConnectionProviderHelper.getConnectionProvider(factory.getClass()), factory);
+		this(factory.getDefaultConnectionProvider(), factory);
 	}
 	/**
 	 * @see org.cch.nanodb.JdbcDao#select(java.lang.String, org.cch.nanodb.mapper.RecordMapper, java.lang.Object[])

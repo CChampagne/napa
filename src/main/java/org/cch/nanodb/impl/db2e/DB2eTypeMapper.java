@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb.impl.db2e;
 
 import java.sql.Types;

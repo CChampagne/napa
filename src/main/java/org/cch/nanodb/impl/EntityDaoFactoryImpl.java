@@ -21,10 +21,13 @@ import org.cch.nanodb.mapper.impl.EntityRecordMapper;
 public class EntityDaoFactoryImpl implements EntityDaoFactory {
 	private final Map<Class<? >, EntityHandler<? >> handlers = new HashMap<Class<? >, EntityHandler<? >>();
 	private final Map<Class<? >, SQLGenerator<? >> generators = new HashMap<Class<? >, SQLGenerator<? >>();
+	private final ConnectionProvider connectionProvider;
 
-
+	public EntityDaoFactoryImpl(ConnectionProvider connectionProvider) {
+		this.connectionProvider = connectionProvider;
+	}
 	/**
-	 * @throws AnnotationException 
+	 * @throws AnnotationException Exception thrown if the entity is not valid. E.g. it contains inconsistent usage of annotation, name conflict....
 	 * @see EntityDaoFactory#getEntityDao(java.lang.Class)
 	 */
 	public <E> EntityDao<E> getEntityDao(Class<E> entityClass) throws AnnotationException {
@@ -92,6 +95,10 @@ public class EntityDaoFactoryImpl implements EntityDaoFactory {
 	public <E> EntityRecordMapper<E> getEntityRecordMapper(Class<E> entityClass)
 			throws AnnotationException {
 		return new EntityRecordMapper<E>(entityClass, this);
+	}
+
+	public ConnectionProvider getDefaultConnectionProvider() {
+		return connectionProvider;
 	}
 
 }

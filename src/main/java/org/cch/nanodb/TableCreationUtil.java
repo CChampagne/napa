@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb;
 
 import java.sql.Connection;
@@ -36,7 +33,7 @@ public class TableCreationUtil {
 																// table
 
 	public TableCreationUtil(EntityDaoFactory factory) {
-		this(ConnectionProviderHelper.getConnectionProvider(factory.getClass()), factory);
+		this(factory.getDefaultConnectionProvider(), factory);
 	}
 
 	public TableCreationUtil(ConnectionProvider connectionProvider, EntityDaoFactory factory) {
@@ -70,8 +67,8 @@ public class TableCreationUtil {
 	 * 
 	 * @param table
 	 *            the name of the table
-	 * @return
-	 * @throws SQLException
+	 * @return true if the table exists
+	 * @throws SQLException A wrapper of an exception thrown by JDBC layer
 	 */
 	public boolean tableExists(String table) throws SQLException {
 		return getTableNames().contains(table.toUpperCase());
@@ -81,7 +78,7 @@ public class TableCreationUtil {
 	 * Returns a set of table names in upper case.
 	 * 
 	 * @return a set of table names in upper case.
-	 * @throws SQLException
+	 * @throws SQLException A wrapper of an exception thrown by JDBC layer
 	 */
 	public Set<String> getTableNames() throws SQLException {
 		Set<String> tables = new TreeSet<String>();
@@ -145,14 +142,12 @@ public class TableCreationUtil {
 		}
 	}
 
-	public <E> void addField(Class<E> entityClass, String field) throws PersistenceException,
-			SQLException {
+	public <E> void addField(Class<E> entityClass, String field) throws PersistenceException {
 		String addField = generator.generateAddField(entityClass, field);
 		executeQuery(addField);
 	} 
 
-	public <E> void addMissingFields(Class<E> entityClass) throws PersistenceException,
-			SQLException {
+	public <E> void addMissingFields(Class<E> entityClass) throws PersistenceException {
 		EntityHandler<E> handler = factory.getEntityHandler(entityClass);
 		Map<String, FieldMetaData>fieldsInDB = getTableMetaDataFromDB(handler.getTableName());
 		for(EntityField field : handler.getEntityFields()){
@@ -228,8 +223,8 @@ public class TableCreationUtil {
 	}
 	/**
 	 * 
-	 * @param table
-	 * @param field
+	 * @param table The name of the table to check
+	 * @param field The name of the field to check
 	 * @return true if the field exists on the table
 	 * @throws AnnotationException 
 	 */
@@ -325,13 +320,13 @@ public class TableCreationUtil {
 		public String getDefaultValue() {
 			return defaultValue;
 		}
-//NOT used yet
-//		/** 
-//		 * @param defaultValue the defaultValue to set
-//		 */
-//		public void setDefaultValue(String defaultValue) {
-//			this.defaultValue = defaultValue;
-//		}
+
+		/**
+		 * @param defaultValue the defaultValue to set
+		 */
+		public void setDefaultValue(String defaultValue) {
+			this.defaultValue = defaultValue;
+		}
 
 	}
 }

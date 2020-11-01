@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb.annotations.generator;
 
 import org.cch.nanodb.exceptions.AnnotationException;

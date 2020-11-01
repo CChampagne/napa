@@ -1,10 +1,7 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb;
 
 /**
- * class allowing t
+ * class wrapping null value while keeping information about the target type
  * @author Christophe Champagne
  *
  */

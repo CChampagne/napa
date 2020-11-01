@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb;
 
 import java.sql.Connection;
@@ -18,15 +15,15 @@ public interface ConnectionProvider {
 	 * This method returns a connectionObject
 	 * @return an instance of Connection
 	 */
-	public Connection getConnection() throws SQLException;
+	Connection getConnection() throws SQLException;
 	/**
 	 * Closes the current connection(s) and creates an new one;
 	 * @return the new Connection
 	 */
-	public Connection resetConnection() throws SQLException;
+	Connection resetConnection() throws SQLException;
 	/**
 	 * Closes any current connection;
 	 */
-	public void close() throws SQLException;
+	void close() throws SQLException;
 
 }

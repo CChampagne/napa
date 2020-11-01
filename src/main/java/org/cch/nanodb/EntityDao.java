@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb;
 
 import org.cch.nanodb.exceptions.PersistenceException;

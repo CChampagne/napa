@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb;
 
 import java.sql.PreparedStatement;
@@ -15,15 +12,15 @@ import org.cch.nanodb.mapper.ResultSetAccessor;
  */
 public interface SQLTypeMapper {
 
-	public abstract int getSqlTypeFromClass(Class<?> cls);
+	int getSqlTypeFromClass(Class<?> cls);
 
-	public abstract int getSizeFromType(int type);
+	int getSizeFromType(int type);
 
-	public abstract int getPrecisionFromType(int type);
+	int getPrecisionFromType(int type);
 
-	public abstract ResultSetAccessor getResultSetGetterFromClass(Class<?> cls,
+	ResultSetAccessor getResultSetGetterFromClass(Class<?> cls,
 			int sqlType);
 	
-	public abstract void setParameter(PreparedStatement statement, int index, Object value)throws SQLException, PersistenceException;
+	void setParameter(PreparedStatement statement, int index, Object value)throws SQLException, PersistenceException;
 
 }

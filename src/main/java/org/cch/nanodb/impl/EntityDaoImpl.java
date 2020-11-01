@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb.impl;
 
 import java.math.BigDecimal;
@@ -15,7 +12,6 @@ import org.cch.nanodb.exceptions.AnnotationException;
 import org.cch.nanodb.exceptions.PersistenceException;
 import org.cch.nanodb.exceptions.SQLException;
 import org.cch.nanodb.ConnectionProvider;
-import org.cch.nanodb.ConnectionProviderHelper;
 import org.cch.nanodb.EntityDaoFactory;
 import org.cch.nanodb.JdbcDao;
 import org.cch.nanodb.SQLGenerator;
@@ -39,13 +35,13 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 	private EntityHandler<E> entityHandler;
 	private RecordMapper<E> recordMapper;
 	private EntityDaoFactory factory;
-	private enum Operation{INSERT, UPDATE, SELECT, DELETE};
+	private enum Operation{INSERT, UPDATE, SELECT, DELETE}
 	private String isPresentQuery;
 	private String countQuery;
 	
 	
 	public EntityDaoImpl(Class<E> entityClass, EntityDaoFactory factory) throws AnnotationException{
-		this(entityClass, factory, ConnectionProviderHelper.getConnectionProvider(factory.getClass()));
+		this(entityClass, factory, factory.getDefaultConnectionProvider());
 	}
 	public EntityDaoImpl(Class<E> entityClass, EntityDaoFactory factory, ConnectionProvider connectionProvider) throws AnnotationException{
 		this.factory = factory;
@@ -61,7 +57,7 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 	/**
 	 * @see EntityDao#selectAll()
 	 */
-	public List<E> selectAll() throws PersistenceException,	SQLException {
+	public List<E> selectAll() throws PersistenceException {
 		return jdbcDao.select(sqlGenerator.createSelectAll(), recordMapper);
 	}
 	/***
@@ -91,7 +87,7 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 	/**)
 	 * @see EntityDao#insert(E)
 	 */
-	public void insert(E entity) throws PersistenceException, SQLException {
+	public void insert(E entity) throws PersistenceException {
 		String query = sqlGenerator.createInsert();
 		jdbcDao.executeUpdate(query, getValues(entity, Operation.INSERT));
 	}
@@ -99,7 +95,7 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 	/**
 	 * @see EntityDao#update(E)
 	 */
-	public void update(E entity) throws PersistenceException, SQLException {
+	public void update(E entity) throws PersistenceException {
 		String query = sqlGenerator.createUpdate();
 		List<EntityField> fields = new ArrayList<EntityField>(entityHandler.getEntityFields().size());
 		for(EntityField entityField : entityHandler.getEntityFields()){
@@ -114,7 +110,7 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 	/**
 	 * @see EntityDao#persist(E)
 	 */
-	public void persist(E entity) throws PersistenceException, SQLException {
+	public void persist(E entity) throws PersistenceException {
 		if(recordExists(entity)){
 			update(entity);
 		} else {
@@ -125,14 +121,14 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 	/**
 	 * @see EntityDao#delete(E)
 	 */
-	public void delete(E entity) throws PersistenceException, SQLException {
+	public void delete(E entity) throws PersistenceException {
 		String query = sqlGenerator.createDelete();
 		jdbcDao.executeUpdate(query, getPrimaryKeyValues(entity, Operation.DELETE));
 	}
 	/**
 	 * @see EntityDao#recordExists(E)
 	 */
-	public boolean recordExists(E entity) throws PersistenceException, SQLException {		
+	public boolean recordExists(E entity) throws PersistenceException {
 		List<Long> values= jdbcDao.select(isPresentQuery, new SingleValueMapper(), getPrimaryKeyValues(entity, Operation.SELECT));
 		long count = values.get(0);
 		return count > 0;
@@ -140,13 +136,13 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 	/**
 	 * @see EntityDao#count()
 	 */
-	public long count() throws PersistenceException, SQLException {
+	public long count() throws PersistenceException {
 		return count(countQuery);
 	}
 	/**
 	 * @see EntityDao#count(java.lang.String, java.lang.Object[])
 	 */
-	public long count(String query, Object... parameters) throws PersistenceException, SQLException {
+	public long count(String query, Object... parameters) throws PersistenceException {
 		List<Long> values = jdbcDao.select(query, new SingleValueMapper(), parameters);
 		if(values != null && !values.isEmpty() && values.get(0)!=null){
 			return values.get(0).longValue();

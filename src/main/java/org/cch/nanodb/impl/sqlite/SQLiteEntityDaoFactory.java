@@ -1,6 +1,3 @@
-/**
- * by Christophe Champagne
- */
 package org.cch.nanodb.impl.sqlite;
 
 import org.cch.nanodb.ConnectionProvider;
@@ -16,8 +13,10 @@ import org.cch.nanodb.impl.EntityDaoFactoryImpl;
  *
  */
 public class SQLiteEntityDaoFactory extends EntityDaoFactoryImpl {
-	
 
+	public SQLiteEntityDaoFactory(ConnectionProvider provider) {
+		super(provider);
+	}
 	/**
 	 * @see EntityDaoFactory#getSqlTypeMapper()
 	 */
