@@ -1,19 +1,15 @@
 package org.cch.nanodb.impl;
 
-import java.io.IOException;
+import org.cch.nanodb.*;
+import org.cch.nanodb.exceptions.PersistenceException;
+import org.cch.nanodb.exceptions.SQLException;
+import org.cch.nanodb.mapper.RecordMapper;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.cch.nanodb.exceptions.PersistenceException;
-import org.cch.nanodb.exceptions.SQLException;
-import org.cch.nanodb.ConnectionProvider;
-import org.cch.nanodb.EntityDaoFactory;
-import org.cch.nanodb.JdbcDao;
-import org.cch.nanodb.SQLTypeMapper;
-import org.cch.nanodb.mapper.RecordMapper;
 
 public class JdbcDaoImpl implements JdbcDao {
 	private ConnectionProvider connectionProvider;
@@ -26,6 +22,16 @@ public class JdbcDaoImpl implements JdbcDao {
 	public JdbcDaoImpl(EntityDaoFactory factory) {
 		this(factory.getDefaultConnectionProvider(), factory);
 	}
+
+	/**
+	 *
+	 * @see org.cch.nanodb.JdbcDao#lazySelect(String, RecordMapper, Object...)
+	 */
+	public <T> LazyResultSetIterable<T> lazySelect(String query, RecordMapper<T> mapper, Object... parameters) throws PersistenceException {
+		PreparedStatement statement = prepareStatement(query, parameters);
+		return new LazyResultSetIterableImpl<T>(statement,mapper);
+	}
+
 	/**
 	 * @see org.cch.nanodb.JdbcDao#select(java.lang.String, org.cch.nanodb.mapper.RecordMapper, java.lang.Object[])
 	 */

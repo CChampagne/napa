@@ -17,29 +17,40 @@ import org.cch.nanodb.mapper.RecordMapper;
 public interface JdbcDao {
 
 	/**
-	 * 
-	 * @param query
-	 * @param mapper
-	 * @param parameters
+	 * Executes a select and returns a list of the
+	 * @param query The sql query to execute
+	 * @param mapper The object that will map the recordset into the expected entities
+	 * @param parameters The parameters of the query
 	 * @return
 	 * @throws SQLException
 	 */
-	public abstract <T> List<T> select(String query, RecordMapper<T> mapper,
+	<T> LazyResultSetIterable<T> lazySelect(String query, RecordMapper<T> mapper,
+					   Object... parameters) throws PersistenceException;
+	/**
+	 * Executes a select and returns a list of entities (data object) of the expected type
+	 * @param query The sql query to execute
+	 * @param mapper The object that will map the recordset into the expected entities
+	 * @param parameters The parameters of the query
+	 * @return
+	 * @throws SQLException
+	 */
+	<T> List<T> select(String query, RecordMapper<T> mapper,
 			Object... parameters) throws PersistenceException;
 
 	/**
-	 * prepares a statement following the query and the optional parameters
-	 * The sql type of each parameter is deducted from the class of the parameter
-	 * Note that if the type is serializable 
-	 * @param query
+	 * Prepares a statement following the query and the optional parameters.
+	 * The sql type of each parameter is deducted from the class of the parameter.
+	 * Note that if the type is serializable but isn't assimilable to a primitive type
+	 * (a Number, a Boolean, a String) then it is considered as a blob.
+	 * @param query The (optionally parametrized) sql query to execute
 	 * @param parameters
-	 * @return
-	 * @throws SQLException
+	 * @return the prepared statement to execute
+	 * @throws SQLException Exception wrapping the exception thrown by the underlying JDBC layer.
 	 */
-	public abstract PreparedStatement prepareStatement(String query,
+	PreparedStatement prepareStatement(String query,
 			Object... parameters) throws PersistenceException;
 
-	public abstract void executeUpdate(String query, Object... parameters)
-			throws SQLException, PersistenceException;
+	void executeUpdate(String query, Object... parameters)
+			throws PersistenceException;
 
 }
