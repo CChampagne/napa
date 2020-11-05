@@ -25,9 +25,9 @@ public class JdbcDaoImpl implements JdbcDao {
 
 	/**
 	 *
-	 * @see org.cch.nanodb.JdbcDao#lazySelect(String, RecordMapper, Object...)
+	 * @see org.cch.nanodb.JdbcDao#lazilySelect(String, RecordMapper, Object...)
 	 */
-	public <T> LazyResultSetIterable<T> lazySelect(String query, RecordMapper<T> mapper, Object... parameters) throws PersistenceException {
+	public <T> LazyResultSetIterable<T> lazilySelect(String query, RecordMapper<T> mapper, Object... parameters) throws PersistenceException {
 		PreparedStatement statement = prepareStatement(query, parameters);
 		return new LazyResultSetIterableImpl<T>(statement,mapper);
 	}

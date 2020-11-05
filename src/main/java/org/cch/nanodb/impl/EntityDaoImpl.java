@@ -1,27 +1,22 @@
 package org.cch.nanodb.impl;
 
+import org.cch.nanodb.*;
+import org.cch.nanodb.annotations.DBField;
+import org.cch.nanodb.annotations.GeneratedValue;
+import org.cch.nanodb.annotations.atk.EntityField;
+import org.cch.nanodb.annotations.atk.EntityHandler;
+import org.cch.nanodb.annotations.generator.impl.SingleValueMapper;
+import org.cch.nanodb.exceptions.AnnotationException;
+import org.cch.nanodb.exceptions.PersistenceException;
+import org.cch.nanodb.exceptions.SQLException;
+import org.cch.nanodb.mapper.RecordMapper;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.cch.nanodb.EntityDao;
-import org.cch.nanodb.exceptions.AnnotationException;
-import org.cch.nanodb.exceptions.PersistenceException;
-import org.cch.nanodb.exceptions.SQLException;
-import org.cch.nanodb.ConnectionProvider;
-import org.cch.nanodb.EntityDaoFactory;
-import org.cch.nanodb.JdbcDao;
-import org.cch.nanodb.SQLGenerator;
-import org.cch.nanodb.SQLNull;
-import org.cch.nanodb.annotations.DBField;
-import org.cch.nanodb.annotations.GeneratedValue;
-import org.cch.nanodb.annotations.atk.EntityField;
-import org.cch.nanodb.annotations.atk.EntityHandler;
-import org.cch.nanodb.annotations.generator.impl.SingleValueMapper;
-import org.cch.nanodb.mapper.RecordMapper;
 
 /**
  * @author Christophe Champagne
@@ -75,6 +70,20 @@ public class EntityDaoImpl<E> implements EntityDao<E>{
 			throw new PersistenceException("Retrieved an incorrect number of items (expected = 1, obtained = " + nbr + ")");
 		} 
 		return retrievedEntity;
+	}
+
+	/**
+	 * @see EntityDao#lazilySelectAll()
+	 */
+	public LazyResultSetIterable<E> lazilySelectAll() throws PersistenceException {
+		return  jdbcDao.lazilySelect(sqlGenerator.createSelectAll(), recordMapper);
+	}
+
+	/**
+	 * @see EntityDao#lazilySelect(String, Object...)
+	 */
+	public LazyResultSetIterable<E> lazilySelect(String query, Object... parameters) throws PersistenceException {
+		return jdbcDao.lazilySelect(query, recordMapper, parameters);
 	}
 
 	/**
