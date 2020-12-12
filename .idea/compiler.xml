@@ -11,7 +11,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="foo" target="1.5" />
-      <module name="nanodb" target="1.5" />
+      <module name="napa" target="1.5" />
       <module name="sample" target="1.5" />
     </bytecodeTargetLevel>
   </component>

@@ -1,3 +1,4 @@
-# org.cch.nanodb
+# org.cch.napa
 
-NanoDB is a simple data layer just above JDBC
+Napa stands for **N**ano **P**ersistance **A**PI
+It is a simple data layer just above JDBC.

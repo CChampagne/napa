@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/foo/foo.iml" filepath="$PROJECT_DIR$/foo/foo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanodb.iml" filepath="$PROJECT_DIR$/nanodb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/napa.iml" filepath="$PROJECT_DIR$/napa.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
   </component>
