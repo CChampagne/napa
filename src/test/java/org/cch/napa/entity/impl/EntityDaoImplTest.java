@@ -1,4 +1,4 @@
-package org.cch.napa.impl;
+package org.cch.napa.entity.impl;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,8 @@
-package org.cch.napa;
+package org.cch.napa.entity;
 
 import java.sql.Types;
 
+import org.cch.napa.Conditions;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.annotations.DBField;
 import org.cch.napa.annotations.atk.EntityField;

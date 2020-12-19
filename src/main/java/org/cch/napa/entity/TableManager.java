@@ -1,4 +1,4 @@
-package org.cch.napa;
+package org.cch.napa.entity;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.cch.napa.ConnectionProvider;
+import org.cch.napa.JdbcDao;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.annotations.DBField;
@@ -20,10 +22,11 @@ import org.cch.napa.annotations.atk.EntityIndex;
 import org.cch.napa.exceptions.SQLException;
 
 /**
+ * Class in charge of creating, deleting modifying tables
  * @author Christophe Champagne
  * 
  */
-public class TableCreationUtil {
+public class TableManager {
 	private JdbcDao dao;
 	private SQLTableCreationScriptsGenerator generator;
 	private ConnectionProvider connectionProvider;
@@ -32,11 +35,11 @@ public class TableCreationUtil {
 																// type of a
 																// table
 
-	public TableCreationUtil(EntityDaoFactory factory) {
+	public TableManager(EntityDaoFactory factory) {
 		this(factory.getDefaultConnectionProvider(), factory);
 	}
 
-	public TableCreationUtil(ConnectionProvider connectionProvider, EntityDaoFactory factory) {
+	public TableManager(ConnectionProvider connectionProvider, EntityDaoFactory factory) {
 		this.connectionProvider = connectionProvider;
 		this.dao = factory.getJdbcDao(connectionProvider);
 		this.generator = new SQLTableCreationScriptsGenerator(factory);
@@ -48,14 +51,14 @@ public class TableCreationUtil {
 		executeQuery(drop);
 	}
 
-	public <E> boolean canReadTable(Class<E> entityClass) throws AnnotationException, SQLException {
+	public <E> void checkReadTable(Class<E> entityClass) throws AnnotationException, SQLException {
 		String query = generator.generateCanRead(entityClass);
-		return executeCanRead(query);
+		executeCanRead(query);
 	}
 
-	public boolean canReadTable(String table) throws AnnotationException, SQLException {
+	public void checkReadTable(String table) throws AnnotationException, SQLException {
 		String query = generator.generateCanRead(table);
-		return executeCanRead(query);
+		executeCanRead(query);
 	}
 
 	public <E> boolean tableExists(Class<E> entityClass) throws AnnotationException, SQLException {
@@ -100,14 +103,12 @@ public class TableCreationUtil {
 		return tables;
 	}
 
-	private boolean executeCanRead(String query) throws SQLException {
-		boolean canRead = false;
+	private void executeCanRead(String query) throws SQLException {
 		PreparedStatement statement = null;
 		try {
 			Connection connection = connectionProvider.getConnection();
 			statement = connection.prepareStatement(query);
 			statement.executeQuery();
-			canRead = true;
 		} catch (java.sql.SQLException e) {
 			// The table does not exist
 			throw new SQLException("The query " + query
@@ -121,7 +122,6 @@ public class TableCreationUtil {
 				}
 			}
 		}
-		return canRead;
 	}
 
 	public <E> void createTable(Class<E> entityClass) throws PersistenceException {

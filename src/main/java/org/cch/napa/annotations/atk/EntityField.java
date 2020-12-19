@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Types;
 
-import org.cch.napa.FieldMetaData;
+import org.cch.napa.entity.FieldMetaData;
 import org.cch.napa.annotations.DBField;
 import org.cch.napa.annotations.GeneratedValue;
 import org.cch.napa.annotations.generator.Generator;

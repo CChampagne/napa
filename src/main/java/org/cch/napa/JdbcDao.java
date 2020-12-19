@@ -1,5 +1,6 @@
 package org.cch.napa;
 
+import org.cch.napa.entity.LazyResultSetIterable;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.exceptions.SQLException;
 import org.cch.napa.mapper.RecordMapper;

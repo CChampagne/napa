@@ -1,8 +1,8 @@
-package org.cch.napa.impl.db2e;
+package org.cch.napa.entity.impl.db2e;
 
 import org.cch.napa.ConnectionProvider;
-import org.cch.napa.SQLTypeMapper;
-import org.cch.napa.impl.EntityDaoFactoryImpl;
+import org.cch.napa.entity.SQLTypeMapper;
+import org.cch.napa.entity.impl.EntityDaoFactoryImpl;
 
 /**
  * @author Christophe Champagne

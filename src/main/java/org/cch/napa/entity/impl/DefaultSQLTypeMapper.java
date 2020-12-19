@@ -1,4 +1,4 @@
-package org.cch.napa.impl;
+package org.cch.napa.entity.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,7 +17,7 @@ import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.cch.napa.SQLTypeMapper;
+import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.SQLNull;
 import org.cch.napa.annotations.DBField;

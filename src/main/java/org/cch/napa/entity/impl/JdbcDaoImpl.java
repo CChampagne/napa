@@ -1,6 +1,9 @@
-package org.cch.napa.impl;
+package org.cch.napa.entity.impl;
 
 import org.cch.napa.*;
+import org.cch.napa.entity.EntityDaoFactory;
+import org.cch.napa.entity.LazyResultSetIterable;
+import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.exceptions.SQLException;
 import org.cch.napa.mapper.RecordMapper;

@@ -1,16 +1,16 @@
-package org.cch.napa.impl;
+package org.cch.napa.entity.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cch.napa.EntityDaoFactory;
+import org.cch.napa.entity.EntityDaoFactory;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.ConnectionProvider;
-import org.cch.napa.EntityDao;
+import org.cch.napa.entity.EntityDao;
 import org.cch.napa.JdbcDao;
-import org.cch.napa.SQLGenerator;
-import org.cch.napa.SQLTypeMapper;
+import org.cch.napa.entity.SQLGenerator;
+import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.annotations.atk.EntityHandler;
 import org.cch.napa.mapper.impl.EntityRecordMapper;
 

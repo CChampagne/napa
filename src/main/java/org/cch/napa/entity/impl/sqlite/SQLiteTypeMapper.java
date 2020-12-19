@@ -1,4 +1,4 @@
-package org.cch.napa.impl.sqlite;
+package org.cch.napa.entity.impl.sqlite;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,10 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.cch.napa.SQLTypeMapper;
+import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.impl.AbstractResultSetGetter;
-import org.cch.napa.impl.DefaultSQLTypeMapper;
+import org.cch.napa.entity.impl.AbstractResultSetGetter;
+import org.cch.napa.entity.impl.DefaultSQLTypeMapper;
 import org.cch.napa.mapper.ResultSetAccessor;
 
 /**

@@ -1,12 +1,12 @@
-package org.cch.napa.impl.sqlite;
+package org.cch.napa.entity.impl.sqlite;
 
 import org.cch.napa.ConnectionProvider;
-import org.cch.napa.EntityDaoFactory;
+import org.cch.napa.entity.EntityDaoFactory;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.EntityDao;
-import org.cch.napa.SQLTypeMapper;
-import org.cch.napa.impl.EntityDaoFactoryImpl;
+import org.cch.napa.entity.EntityDao;
+import org.cch.napa.entity.SQLTypeMapper;
+import org.cch.napa.entity.impl.EntityDaoFactoryImpl;
 
 /**
  * @author Christophe Champagne

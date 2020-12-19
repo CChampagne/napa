@@ -1,12 +1,14 @@
-package org.cch.napa;
+package org.cch.napa.entity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cch.napa.impl.EntityDaoFactoryImpl;
-import org.cch.napa.impl.db2e.DB2eEntityDaoFactory;
-import org.cch.napa.impl.sqlite.SQLiteEntityDaoFactory;
+import org.cch.napa.ConnectionProvider;
+import org.cch.napa.entity.EntityDaoFactory;
+import org.cch.napa.entity.impl.EntityDaoFactoryImpl;
+import org.cch.napa.entity.impl.db2e.DB2eEntityDaoFactory;
+import org.cch.napa.entity.impl.sqlite.SQLiteEntityDaoFactory;
 import org.cch.napa.jdbc.BasicConnectionProvider;
 import org.cch.napa.jdbc.DB2eConnectionProvider;
 import org.cch.napa.jdbc.SQLiteConnectionProvider;

@@ -1,8 +1,8 @@
-package org.cch.napa.impl.db2e;
+package org.cch.napa.entity.impl.db2e;
 
 import java.sql.Types;
 
-import org.cch.napa.impl.DefaultSQLTypeMapper;
+import org.cch.napa.entity.impl.DefaultSQLTypeMapper;
 
 /**
  * @author Christophe Champagne

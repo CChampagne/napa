@@ -1,4 +1,4 @@
-package org.cch.napa;
+package org.cch.napa.entity;
 
 import java.io.Closeable;
 import java.util.Iterator;

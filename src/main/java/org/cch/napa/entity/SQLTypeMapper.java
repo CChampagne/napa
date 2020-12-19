@@ -1,4 +1,4 @@
-package org.cch.napa;
+package org.cch.napa.entity;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

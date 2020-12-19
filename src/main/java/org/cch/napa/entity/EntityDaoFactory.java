@@ -1,5 +1,7 @@
-package org.cch.napa;
+package org.cch.napa.entity;
 
+import org.cch.napa.ConnectionProvider;
+import org.cch.napa.JdbcDao;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.annotations.atk.EntityHandler;

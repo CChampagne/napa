@@ -1,6 +1,6 @@
 package org.cch.napa.annotations.generator.impl;
 
-import org.cch.napa.EntityDaoFactory;
+import org.cch.napa.entity.EntityDaoFactory;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.annotations.GeneratedValue;

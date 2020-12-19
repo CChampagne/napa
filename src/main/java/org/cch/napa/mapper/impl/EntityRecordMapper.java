@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.EntityDaoFactory;
-import org.cch.napa.SQLTypeMapper;
+import org.cch.napa.entity.EntityDaoFactory;
+import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.annotations.atk.EntityField;
 import org.cch.napa.annotations.atk.EntityHandler;
 import org.cch.napa.mapper.RecordMapper;

@@ -1,4 +1,4 @@
-package org.cch.napa.impl;
+package org.cch.napa.entity.impl;
 
 import org.cch.napa.*;
 import org.cch.napa.annotations.DBField;
@@ -6,6 +6,10 @@ import org.cch.napa.annotations.GeneratedValue;
 import org.cch.napa.annotations.atk.EntityField;
 import org.cch.napa.annotations.atk.EntityHandler;
 import org.cch.napa.annotations.generator.impl.SingleValueMapper;
+import org.cch.napa.entity.EntityDao;
+import org.cch.napa.entity.EntityDaoFactory;
+import org.cch.napa.entity.LazyResultSetIterable;
+import org.cch.napa.entity.SQLGenerator;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.exceptions.SQLException;
@@ -22,7 +26,7 @@ import java.util.List;
  * @author Christophe Champagne
  *
  */
-public class EntityDaoImpl<E> implements EntityDao<E>{
+public class EntityDaoImpl<E> implements EntityDao<E> {
 	
 	private JdbcDao jdbcDao;
 	private Class<E> entityClass;
