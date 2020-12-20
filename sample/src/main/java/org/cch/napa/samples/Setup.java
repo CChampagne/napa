@@ -1,5 +1,6 @@
 package org.cch.napa.samples;
 
+import org.cch.napa.Client;
 import org.cch.napa.entity.EntityDao;
 import org.cch.napa.entity.EntityDaoFactory;
 import org.cch.napa.entity.EntityDaoFactoryHelper;
@@ -11,10 +12,9 @@ import java.util.Date;
 
 public class Setup {
     public static void main(String...args) throws PersistenceException {
-        EntityDaoFactory factory =EntityDaoFactoryHelper.getFactoryFromConnectionString("jdbc:sqlite:sample.db");
-        TableManager tableCreationUtil = new TableManager(factory.getDefaultConnectionProvider(), factory);
-        tableCreationUtil.createTableIfNotExisting(SampleEntity.class);
-        EntityDao<SampleEntity> dao = factory.getEntityDao(SampleEntity.class);
+        Client client = new Client("jdbc:sqlite:sample.db");
+        client.getTableManager().createTableIfNotExisting(SampleEntity.class);
+        EntityDao<SampleEntity> dao = client.getEntityDao(SampleEntity.class);
         dao.insert(new SampleEntity());
         for(SampleEntity entity : dao.selectAll()) {
 

@@ -7,15 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
@@ -55,6 +50,8 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 			return Types.TIMESTAMP;
 		} else if(cls.equals(Blob.class)){
 			return Types.BLOB;
+		} else if(cls.equals(UUID.class)){
+			return Types.VARCHAR;
 		} else if(Serializable.class.isAssignableFrom(cls)){
 			return Types.BLOB;
 		}
@@ -216,12 +213,26 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return valAsEnum;
 				}				
 			};			
+		} else if (cls.equals(UUID.class) && sqlType == Types.BLOB){
+			resultSetGetter =  new AbstractResultSetGetter(){
+				public UUID getValue(ResultSet resultSet, String columnName) throws SQLException {
+					byte[] val = resultSet.getBytes(columnName);
+					return val == null ? null : UUID.nameUUIDFromBytes(val);
+				}
+			};
+		} else if (cls.equals(UUID.class)){
+			resultSetGetter =  new AbstractResultSetGetter(){
+				public UUID getValue(ResultSet resultSet, String columnName) throws SQLException {
+					String val = resultSet.getString(columnName);
+					return val == null ? null : UUID.fromString(val);
+				}
+			};
 		} else if (cls.equals(Blob.class)){
 			resultSetGetter =  new AbstractResultSetGetter(){
 				public Blob getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getBlob(columnName);
-				}				
-			};			
+				}
+			};
 		} else if (Serializable.class.isAssignableFrom(cls)){
 			resultSetGetter =  getResultSetBlobAccessor();
 		}

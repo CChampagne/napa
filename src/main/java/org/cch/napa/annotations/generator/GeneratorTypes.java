@@ -12,11 +12,15 @@ public class GeneratorTypes {
 	 */
 	public static final String SEQUENCE = "pseudo_sequence";
 	/**
-	 * Generator creation a date or derivative corresponding to the current time
+	 * Generator creating a date or derivative corresponding to the current time
 	 */
 	public static final String DATE = "date";
 	/**
-	 * Generator creation a Calendar corresponding to the current time
+	 * Generator creating a Calendar corresponding to the current time
 	 */
 	public static final String CALENDAR = "cal";
+	/**
+	 *  Generator creating a UUID object
+	 */
+	public static final String GUID = "GUID";
 }
