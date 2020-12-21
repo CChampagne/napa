@@ -4,7 +4,7 @@ import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.ConnectionProvider;
 import org.cch.napa.entity.EntityDaoFactory;
-import org.cch.napa.annotations.atk.EntityField;
+import org.cch.napa.entity.annotations.atk.EntityField;
 import org.cch.napa.entity.impl.EntityDaoImpl;
 
 /**

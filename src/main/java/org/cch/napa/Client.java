@@ -6,6 +6,10 @@ import org.cch.napa.entity.EntityDaoFactoryHelper;
 import org.cch.napa.entity.TableManager;
 import org.cch.napa.exceptions.PersistenceException;
 
+/**
+ * This is a facade to the main functionalities of Napa.
+ * It can be used as a starting point to everything
+ */
 public class Client {
     private EntityDaoFactory factory;
 

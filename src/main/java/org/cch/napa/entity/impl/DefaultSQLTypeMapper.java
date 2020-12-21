@@ -15,7 +15,7 @@ import java.util.UUID;
 import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.SQLNull;
-import org.cch.napa.annotations.DBField;
+import org.cch.napa.entity.annotations.DBField;
 import org.cch.napa.mapper.ResultSetAccessor;
 /**
  * @author Christophe Champagne
@@ -275,6 +275,8 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 			statement.setTimestamp(index, new Timestamp(((Calendar)value).getTime().getTime()));
 		}else if (value.getClass().isEnum()){
 			statement.setString(index, ((Enum<?>)value).name());
+		}else if (value instanceof UUID){
+			statement.setString(index,value.toString());
 		}else if (value instanceof Serializable){//lets make it a blob
 			setBlob(statement, value, index);
 		}else{

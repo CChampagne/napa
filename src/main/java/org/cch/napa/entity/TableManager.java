@@ -15,10 +15,10 @@ import org.cch.napa.ConnectionProvider;
 import org.cch.napa.JdbcDao;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.annotations.DBField;
-import org.cch.napa.annotations.atk.EntityField;
-import org.cch.napa.annotations.atk.EntityHandler;
-import org.cch.napa.annotations.atk.EntityIndex;
+import org.cch.napa.entity.annotations.DBField;
+import org.cch.napa.entity.annotations.atk.EntityField;
+import org.cch.napa.entity.annotations.atk.EntityHandler;
+import org.cch.napa.entity.annotations.atk.EntityIndex;
 import org.cch.napa.exceptions.SQLException;
 
 /**
@@ -134,12 +134,12 @@ public class TableManager {
 		}
 	}
 
-	public <E> void createTableIfNotExisting(Class<E> entityClass) throws PersistenceException {
+	public <E> boolean createTableIfNotExisting(Class<E> entityClass) throws PersistenceException {
 		if (!tableExists(entityClass)) {
 			createTable(entityClass);
-		} else {
-			throw new PersistenceException("Table corresponding to " + entityClass.getName() + " already existing");
+			return true;
 		}
+		return false;
 	}
 
 	public <E> void addField(Class<E> entityClass, String field) throws PersistenceException {

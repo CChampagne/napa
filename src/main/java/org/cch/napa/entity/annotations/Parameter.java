@@ -1,4 +1,4 @@
-package org.cch.napa.annotations;
+package org.cch.napa.entity.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Christophe Champagne
- * This annotation can be used to be set as parameter of other org.cch.napa.annotations
+ * This annotation can be used to be set as parameter of other org.cch.napa.entity.annotations
  */
 @Target(value={ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)

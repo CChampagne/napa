@@ -1,4 +1,4 @@
-package org.cch.napa.annotations.generator;
+package org.cch.napa.entity.annotations.generator;
 
 /**
  * @author Christophe Champagne

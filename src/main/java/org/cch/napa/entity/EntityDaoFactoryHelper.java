@@ -28,8 +28,8 @@ public class EntityDaoFactoryHelper {
 
     static {
         //
-        registerFactory(SQLITE_DB_TYPE, DB2eEntityDaoFactory.class, DB2eConnectionProvider.class);
-        registerFactory(DB2E_DB_TYPE, SQLiteEntityDaoFactory.class, SQLiteConnectionProvider.class);
+        registerFactory(DB2E_DB_TYPE, DB2eEntityDaoFactory.class, DB2eConnectionProvider.class);
+        registerFactory(SQLITE_DB_TYPE, SQLiteEntityDaoFactory.class, SQLiteConnectionProvider.class);
     }
 
     /**

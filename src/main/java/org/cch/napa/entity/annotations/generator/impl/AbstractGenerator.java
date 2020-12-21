@@ -1,12 +1,12 @@
-package org.cch.napa.annotations.generator.impl;
+package org.cch.napa.entity.annotations.generator.impl;
 
 import org.cch.napa.entity.EntityDaoFactory;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.annotations.GeneratedValue;
-import org.cch.napa.annotations.atk.EntityField;
-import org.cch.napa.annotations.atk.EntityHandler;
-import org.cch.napa.annotations.generator.Generator;
+import org.cch.napa.entity.annotations.GeneratedValue;
+import org.cch.napa.entity.annotations.atk.EntityField;
+import org.cch.napa.entity.annotations.atk.EntityHandler;
+import org.cch.napa.entity.annotations.generator.Generator;
 
 /**
  * @author Christophe Champagne
@@ -36,11 +36,13 @@ public abstract class AbstractGenerator implements Generator{
 	protected abstract void performTypeCheck(EntityField entityField)throws PersistenceException;
 	
 	/**
-	 * Do the proper instanciation (if required) and initialization 
+	 * Do the proper instantiation (if required) and initialization
 	 */
-	protected abstract  <E> Generator performInit(
+	protected  <E> Generator performInit(
 			GeneratedValue annotation, EntityField field, EntityHandler<E> entity) 
-			throws AnnotationException,PersistenceException;
+			throws AnnotationException,PersistenceException {
+		return this;
+	}
 	/**
 	 * @see Generator#setFactory(EntityDaoFactory)
 	 */

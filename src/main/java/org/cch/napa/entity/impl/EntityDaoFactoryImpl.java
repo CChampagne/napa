@@ -11,7 +11,7 @@ import org.cch.napa.entity.EntityDao;
 import org.cch.napa.JdbcDao;
 import org.cch.napa.entity.SQLGenerator;
 import org.cch.napa.entity.SQLTypeMapper;
-import org.cch.napa.annotations.atk.EntityHandler;
+import org.cch.napa.entity.annotations.atk.EntityHandler;
 import org.cch.napa.mapper.impl.EntityRecordMapper;
 
 /**

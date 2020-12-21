@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.cch.napa.annotations.atk;
+package org.cch.napa.entity.annotations.atk;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
 import java.sql.Types;
 
 import org.cch.napa.entity.FieldMetaData;
-import org.cch.napa.annotations.DBField;
-import org.cch.napa.annotations.GeneratedValue;
-import org.cch.napa.annotations.generator.Generator;
+import org.cch.napa.entity.annotations.DBField;
+import org.cch.napa.entity.annotations.GeneratedValue;
+import org.cch.napa.entity.annotations.generator.Generator;
 
 /**
  * @author Christophe Champagne

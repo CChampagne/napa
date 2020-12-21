@@ -1,19 +1,17 @@
-package org.cch.napa.annotations.generator;
+package org.cch.napa.entity.annotations.generator;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 
+import org.cch.napa.entity.annotations.generator.impl.GuidGenerator;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.annotations.GeneratedValue;
-import org.cch.napa.annotations.atk.EntityField;
-import org.cch.napa.annotations.atk.EntityHandler;
-import org.cch.napa.annotations.generator.impl.CalendarGenerator;
-import org.cch.napa.annotations.generator.impl.DateGenerator;
-import org.cch.napa.annotations.generator.impl.PseudoSequenceGenerator;
+import org.cch.napa.entity.annotations.GeneratedValue;
+import org.cch.napa.entity.annotations.atk.EntityField;
+import org.cch.napa.entity.annotations.atk.EntityHandler;
+import org.cch.napa.entity.annotations.generator.impl.CalendarGenerator;
+import org.cch.napa.entity.annotations.generator.impl.DateGenerator;
+import org.cch.napa.entity.annotations.generator.impl.PseudoSequenceGenerator;
 
 /**
  * @author Christophe Champagne
@@ -29,7 +27,8 @@ public class GeneratorFactory {
 		generatorsPerType.put(GeneratorTypes.SEQUENCE, PseudoSequenceGenerator.class);
 		generatorsPerType.put(GeneratorTypes.DATE, DateGenerator.class);
 		generatorsPerType.put(GeneratorTypes.CALENDAR, CalendarGenerator.class);
-		
+		generatorsPerType.put(GeneratorTypes.GUID, GuidGenerator.class);
+
 		defaultGeneratorTypesPerFieldType.put(Integer.class, GeneratorTypes.SEQUENCE);
 		defaultGeneratorTypesPerFieldType.put(Long.class, GeneratorTypes.SEQUENCE);
 		defaultGeneratorTypesPerFieldType.put(Integer.TYPE, GeneratorTypes.SEQUENCE);
@@ -39,6 +38,7 @@ public class GeneratorFactory {
 		defaultGeneratorTypesPerFieldType.put(Time.class, GeneratorTypes.DATE);
 		defaultGeneratorTypesPerFieldType.put(Timestamp.class, GeneratorTypes.DATE);
 		defaultGeneratorTypesPerFieldType.put(Calendar.class, GeneratorTypes.CALENDAR);
+		defaultGeneratorTypesPerFieldType.put(UUID.class, GeneratorTypes.GUID);
 	}
 	/**
 	 * Get generator following given parameter

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.cch.napa.annotations;
+package org.cch.napa.entity.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

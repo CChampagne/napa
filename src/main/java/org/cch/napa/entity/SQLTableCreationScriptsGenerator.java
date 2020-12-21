@@ -4,10 +4,10 @@ import java.sql.Types;
 
 import org.cch.napa.Conditions;
 import org.cch.napa.exceptions.AnnotationException;
-import org.cch.napa.annotations.DBField;
-import org.cch.napa.annotations.atk.EntityField;
-import org.cch.napa.annotations.atk.EntityHandler;
-import org.cch.napa.annotations.atk.EntityIndex;
+import org.cch.napa.entity.annotations.DBField;
+import org.cch.napa.entity.annotations.atk.EntityField;
+import org.cch.napa.entity.annotations.atk.EntityHandler;
+import org.cch.napa.entity.annotations.atk.EntityIndex;
 
 /**
  * @author Christophe Champagne

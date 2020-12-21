@@ -1,11 +1,10 @@
 package org.cch.napa.entity.impl;
 
 import org.cch.napa.*;
-import org.cch.napa.annotations.DBField;
-import org.cch.napa.annotations.GeneratedValue;
-import org.cch.napa.annotations.atk.EntityField;
-import org.cch.napa.annotations.atk.EntityHandler;
-import org.cch.napa.annotations.generator.impl.SingleValueMapper;
+import org.cch.napa.entity.annotations.DBField;
+import org.cch.napa.entity.annotations.GeneratedValue;
+import org.cch.napa.entity.annotations.atk.EntityField;
+import org.cch.napa.entity.annotations.atk.EntityHandler;
 import org.cch.napa.entity.EntityDao;
 import org.cch.napa.entity.EntityDaoFactory;
 import org.cch.napa.entity.LazyResultSetIterable;

@@ -10,9 +10,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="foo" target="1.5" />
-      <module name="napa" target="1.5" />
-      <module name="sample" target="1.5" />
+      <module name="napa" target="8" />
+      <module name="sample" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

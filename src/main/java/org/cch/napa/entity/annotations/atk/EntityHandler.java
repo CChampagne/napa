@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.cch.napa.annotations.atk;
+package org.cch.napa.entity.annotations.atk;
 
 import java.lang.annotation.AnnotationFormatError;
 import java.lang.reflect.AnnotatedElement;
@@ -25,18 +25,18 @@ import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.entity.EntityDaoFactory;
 import org.cch.napa.entity.SQLTypeMapper;
-import org.cch.napa.annotations.DBField;
-import org.cch.napa.annotations.Entity;
-import org.cch.napa.annotations.GeneratedValue;
-import org.cch.napa.annotations.Id;
-import org.cch.napa.annotations.Index;
-import org.cch.napa.annotations.Indexed;
-import org.cch.napa.annotations.Indexes;
-import org.cch.napa.annotations.NotNull;
-import org.cch.napa.annotations.Transient;
-import org.cch.napa.annotations.UniqueIndexed;
-import org.cch.napa.annotations.generator.Generator;
-import org.cch.napa.annotations.generator.GeneratorFactory;
+import org.cch.napa.entity.annotations.DBField;
+import org.cch.napa.entity.annotations.Entity;
+import org.cch.napa.entity.annotations.GeneratedValue;
+import org.cch.napa.entity.annotations.Id;
+import org.cch.napa.entity.annotations.Index;
+import org.cch.napa.entity.annotations.Indexed;
+import org.cch.napa.entity.annotations.Indexes;
+import org.cch.napa.entity.annotations.NotNull;
+import org.cch.napa.entity.annotations.Transient;
+import org.cch.napa.entity.annotations.UniqueIndexed;
+import org.cch.napa.entity.annotations.generator.Generator;
+import org.cch.napa.entity.annotations.generator.GeneratorFactory;
 
 /**
  * @author Christophe Champagne
@@ -135,7 +135,7 @@ public class EntityHandler<T>{
 				if(entityField.getField() == null && (entityField.getSetter() == null || entityField.getGetter() == null)){
 					Field field = lookupFieldInAncestors(entityField.getFieldName(), entityField.getDBFieldName());
 					if(field != null){
-						entityField.setField(field);//TODO analyse org.cch.napa.annotations by try to not override existing...
+						entityField.setField(field);//TODO analyse org.cch.napa.entity.annotations by try to not override existing...
 					}
 				}
 				if(entityField.getJavaType().isPrimitive()){

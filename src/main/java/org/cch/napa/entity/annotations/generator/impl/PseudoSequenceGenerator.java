@@ -1,13 +1,14 @@
-package org.cch.napa.annotations.generator.impl;
+package org.cch.napa.entity.annotations.generator.impl;
 
 import java.util.List;
 
+import org.cch.napa.entity.impl.SingleValueMapper;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.annotations.GeneratedValue;
-import org.cch.napa.annotations.Parameter;
-import org.cch.napa.annotations.atk.EntityField;
-import org.cch.napa.annotations.atk.EntityHandler;
-import org.cch.napa.annotations.generator.Generator;
+import org.cch.napa.entity.annotations.GeneratedValue;
+import org.cch.napa.entity.annotations.Parameter;
+import org.cch.napa.entity.annotations.atk.EntityField;
+import org.cch.napa.entity.annotations.atk.EntityHandler;
+import org.cch.napa.entity.annotations.generator.Generator;
 
 /**
  * @author Christophe Champagne

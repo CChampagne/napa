@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.cch.napa.annotations.atk;
+package org.cch.napa.entity.annotations.atk;
 
 import java.util.ArrayList;
 import java.util.Collection;
