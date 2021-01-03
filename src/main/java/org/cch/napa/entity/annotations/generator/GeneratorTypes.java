@@ -22,5 +22,10 @@ public class GeneratorTypes {
 	/**
 	 *  Generator creating a UUID object
 	 */
-	public static final String GUID = "GUID";
+	public static final String UUID = "UUID";
+	/**
+	 *  Alias for UUID
+	 */
+	public static final String UUID_STRING = "UUIDS";
+
 }

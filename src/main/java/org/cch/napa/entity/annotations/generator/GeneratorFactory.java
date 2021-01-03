@@ -4,14 +4,11 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
-import org.cch.napa.entity.annotations.generator.impl.GuidGenerator;
+import org.cch.napa.entity.annotations.generator.impl.*;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.entity.annotations.GeneratedValue;
 import org.cch.napa.entity.annotations.atk.EntityField;
 import org.cch.napa.entity.annotations.atk.EntityHandler;
-import org.cch.napa.entity.annotations.generator.impl.CalendarGenerator;
-import org.cch.napa.entity.annotations.generator.impl.DateGenerator;
-import org.cch.napa.entity.annotations.generator.impl.PseudoSequenceGenerator;
 
 /**
  * @author Christophe Champagne
@@ -27,7 +24,8 @@ public class GeneratorFactory {
 		generatorsPerType.put(GeneratorTypes.SEQUENCE, PseudoSequenceGenerator.class);
 		generatorsPerType.put(GeneratorTypes.DATE, DateGenerator.class);
 		generatorsPerType.put(GeneratorTypes.CALENDAR, CalendarGenerator.class);
-		generatorsPerType.put(GeneratorTypes.GUID, GuidGenerator.class);
+		generatorsPerType.put(GeneratorTypes.UUID, UuidGenerator.class);
+		generatorsPerType.put(GeneratorTypes.UUID_STRING, UuidStringGenerator.class);
 
 		defaultGeneratorTypesPerFieldType.put(Integer.class, GeneratorTypes.SEQUENCE);
 		defaultGeneratorTypesPerFieldType.put(Long.class, GeneratorTypes.SEQUENCE);
@@ -38,7 +36,8 @@ public class GeneratorFactory {
 		defaultGeneratorTypesPerFieldType.put(Time.class, GeneratorTypes.DATE);
 		defaultGeneratorTypesPerFieldType.put(Timestamp.class, GeneratorTypes.DATE);
 		defaultGeneratorTypesPerFieldType.put(Calendar.class, GeneratorTypes.CALENDAR);
-		defaultGeneratorTypesPerFieldType.put(UUID.class, GeneratorTypes.GUID);
+		defaultGeneratorTypesPerFieldType.put(UUID.class, GeneratorTypes.UUID);
+		defaultGeneratorTypesPerFieldType.put(String.class, GeneratorTypes.UUID_STRING);
 	}
 	/**
 	 * Get generator following given parameter

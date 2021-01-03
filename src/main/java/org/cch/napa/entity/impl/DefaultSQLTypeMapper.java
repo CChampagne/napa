@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -134,7 +135,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return new Long(val);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setLong(index, ((Number)value).longValue());
 				}
 			};			
@@ -148,7 +149,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return new Short(val);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setShort(index, ((Number)value).shortValue());
 				}
 			};			
@@ -162,7 +163,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return new Double(val);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setDouble(index, ((Number)value).doubleValue());
 				}
 			};
@@ -176,7 +177,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return new Float(val);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setFloat(index, ((Number)value).floatValue());
 				}
 			};
@@ -186,7 +187,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return resultSet.getBigDecimal(columnName);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setBigDecimal(index, (BigDecimal) value);
 				}
 			};
@@ -200,7 +201,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return new Boolean(val==1);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setInt(index, ((Boolean) value).booleanValue()?1:0);
 				}
 			};
@@ -211,7 +212,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return resultSet.getTimestamp(columnName);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setTimestamp(index, new java.sql.Timestamp(((Date)value).getTime()));
 				}
 			};
@@ -221,7 +222,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return resultSet.getDate(columnName);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setDate(index, new java.sql.Date(((Date)value).getTime()));
 				}
 			};
@@ -231,7 +232,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return resultSet.getTime(columnName);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setTime(index, new java.sql.Time(((Date)value).getTime()));
 				}
 			};
@@ -247,7 +248,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return cal;
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setTime(index, new java.sql.Time(((Calendar)value).getTimeInMillis()));
 				}
 			};
@@ -267,7 +268,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return valAsEnum;
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
 					statement.setString(index, ((Enum<?>)value).name());
 				}
 			};
@@ -275,7 +276,21 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public UUID getValue(ResultSet resultSet, String columnName) throws SQLException {
 					byte[] val = resultSet.getBytes(columnName);
-					return val == null ? null : UUID.nameUUIDFromBytes(val);
+					if (resultSet.wasNull()) {
+						return null;
+					}
+					ByteBuffer bb = ByteBuffer.wrap(val);
+					long firstLong = bb.getLong();
+					long secondLong = bb.getLong();
+					return new UUID(firstLong, secondLong);
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
+					UUID uuid = (UUID)value;
+					ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+					bb.putLong(uuid.getMostSignificantBits());
+					bb.putLong(uuid.getLeastSignificantBits());
+					statement.setBytes(index, bb.array());
 				}
 			};
 		} else if (cls.equals(UUID.class)){
@@ -285,14 +300,18 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					return val == null ? null : UUID.fromString(val);
 				}
 
-				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
-					statement.setString(index, ((Enum<?>)value).name());
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
+					statement.setString(index, value.toString());
 				}
 			};
 		} else if (cls.equals(Blob.class)){
 			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Blob getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getBlob(columnName);
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
+					statement.setBlob(index, (Blob)value);
 				}
 			};
 		} else if (Serializable.class.isAssignableFrom(cls)){
@@ -301,7 +320,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		return resultSetGetter;
 	}
 	
-	public void setParameter(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException{
+	public void setParameter(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
 		if(value == null){
 			//Null parameter given to statement! This may cause dysfunction's (depends on DB)
 			statement.setObject(index, null);
@@ -371,7 +390,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 	}
 
 	protected QueryValueAccessor getResultSetBlobAccessor(){
-		return new AbstractQueryValueAccessor(){
+		return new AbstractQueryValueAccessor(Types.BLOB){
 			public Serializable getValue(ResultSet resultSet, String columnName) throws SQLException, PersistenceException {
 				Serializable serializable = null;
 				try {
@@ -397,7 +416,11 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					}
 				}
 				return value;
-			}		
+			}
+
+			protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				setBlob(statement, value, index);
+			}
 		};
 	}
 }

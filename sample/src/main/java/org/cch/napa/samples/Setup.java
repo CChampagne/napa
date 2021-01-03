@@ -29,12 +29,12 @@ public class Setup {
 
         @Id
         @GeneratedValue
-        private UUID id;
+        private String id;
         private Date creationDate;
         private Date lastModificationDate;
         private String content;
 
-        public UUID getId() {
+        public String getId() {
             return id;
         }
 

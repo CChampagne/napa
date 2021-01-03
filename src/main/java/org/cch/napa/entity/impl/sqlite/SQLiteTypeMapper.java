@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
@@ -18,6 +19,7 @@ import org.cch.napa.entity.impl.DefaultSQLTypeMapper;
 import org.cch.napa.mapper.QueryValueAccessor;
 
 /**
+ * SqlTypeMapper specific to SQLite database
  * @author Christophe Champagne
  *
  */
@@ -26,9 +28,8 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 	 * @see SQLTypeMapper#getResultSetGetterFromClass(java.lang.Class, int)
 	 */
 	public QueryValueAccessor getResultSetGetterFromClass(Class<?>cls, int sqlType){
-		QueryValueAccessor resultSetGetter = null;
-		if (cls.equals(BigDecimal.class)){
-			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
+		if (cls.equals(BigDecimal.class)) {
+			return  new AbstractQueryValueAccessor(sqlType){
 				public BigDecimal getValue(ResultSet resultSet, String columnName) throws SQLException {
 					double val = resultSet.getDouble(columnName);
 					BigDecimal value = null;
@@ -36,18 +37,20 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 						value = new BigDecimal(val);
 					}
 					return value;
-				}				
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setDouble(index, ((BigDecimal)value).doubleValue());
+				}
 			};			
-		} else {
-			resultSetGetter = super.getResultSetGetterFromClass(cls, sqlType);
-		} 
-		return resultSetGetter;
+		}
+		return super.getResultSetGetterFromClass(cls, sqlType);
 	}
 	
 	public void setParameter(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException{
 		if (value !=null && value instanceof BigDecimal){
 			statement.setDouble(index, ((BigDecimal)value).doubleValue());
-		}else{
+		} else {
 			super.setParameter(statement, index, value);
 		}
 
@@ -76,7 +79,7 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 		}
 	}
 	protected QueryValueAccessor getResultSetBlobAccessor(){
-		return new AbstractQueryValueAccessor(){
+		return new AbstractQueryValueAccessor(Types.BLOB){
 			public Serializable getValue(ResultSet resultSet, String columnName) throws SQLException, PersistenceException {
 				Serializable serializable = null;
 				try {
@@ -102,7 +105,11 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 					}
 				}
 				return value;
-			}		
+			}
+
+			protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+				setBlob(statement, value, index);
+			}
 		};
 	}
 }
