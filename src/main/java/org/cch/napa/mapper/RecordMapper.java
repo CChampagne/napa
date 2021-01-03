@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.cch.napa.mapper;
 
 import java.sql.ResultSet;
@@ -13,5 +10,5 @@ import org.cch.napa.exceptions.PersistenceException;
  *
  */
 public interface RecordMapper<T> {
-	public T map(ResultSet resultSet) throws SQLException, PersistenceException;
+	T map(ResultSet resultSet) throws SQLException, PersistenceException;
 }

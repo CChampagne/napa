@@ -13,9 +13,9 @@ import java.sql.SQLException;
 
 import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.entity.impl.AbstractResultSetGetter;
+import org.cch.napa.entity.impl.AbstractQueryValueAccessor;
 import org.cch.napa.entity.impl.DefaultSQLTypeMapper;
-import org.cch.napa.mapper.ResultSetAccessor;
+import org.cch.napa.mapper.QueryValueAccessor;
 
 /**
  * @author Christophe Champagne
@@ -25,10 +25,10 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 	/**
 	 * @see SQLTypeMapper#getResultSetGetterFromClass(java.lang.Class, int)
 	 */
-	public ResultSetAccessor getResultSetGetterFromClass(Class<?>cls, int sqlType){
-		ResultSetAccessor resultSetGetter = null;
+	public QueryValueAccessor getResultSetGetterFromClass(Class<?>cls, int sqlType){
+		QueryValueAccessor resultSetGetter = null;
 		if (cls.equals(BigDecimal.class)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public BigDecimal getValue(ResultSet resultSet, String columnName) throws SQLException {
 					double val = resultSet.getDouble(columnName);
 					BigDecimal value = null;
@@ -75,8 +75,8 @@ public class SQLiteTypeMapper extends DefaultSQLTypeMapper {
 			}			
 		}
 	}
-	protected ResultSetAccessor getResultSetBlobAccessor(){
-		return new AbstractResultSetGetter(){
+	protected QueryValueAccessor getResultSetBlobAccessor(){
+		return new AbstractQueryValueAccessor(){
 			public Serializable getValue(ResultSet resultSet, String columnName) throws SQLException, PersistenceException {
 				Serializable serializable = null;
 				try {

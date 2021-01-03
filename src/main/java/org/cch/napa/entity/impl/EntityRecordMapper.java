@@ -1,4 +1,4 @@
-package org.cch.napa.mapper.impl;
+package org.cch.napa.entity.impl;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -13,37 +13,21 @@ import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.entity.annotations.atk.EntityField;
 import org.cch.napa.entity.annotations.atk.EntityHandler;
 import org.cch.napa.mapper.RecordMapper;
-import org.cch.napa.mapper.ResultSetAccessor;
+import org.cch.napa.mapper.QueryValueAccessor;
 
 /**
  * @author Christophe Champagne
  *
  */
 public class EntityRecordMapper<E> implements RecordMapper<E> {
-	private static Map<Class<? extends EntityDaoFactory>,
-	Map<Class<?>, Map<String, ResultSetAccessor>>>resultSetGettersPerFactory
-	= new Hashtable<Class<? extends EntityDaoFactory>, Map<Class<?>,Map<String,ResultSetAccessor>>>();
-
-	
 	private Class<E> entityClass;
 	private EntityHandler<E> entityHandler;
-	private Map<String, ResultSetAccessor> resultSetGetters;
+	private Map<String, QueryValueAccessor> resultSetGetters;
 	
 	public EntityRecordMapper(Class<E> entityClass, EntityDaoFactory factory) throws AnnotationException {
 		this.entityClass = entityClass;
 		this.entityHandler = factory.getEntityHandler(entityClass);
-		Map<Class<?>, Map<String,ResultSetAccessor>> resultSetPerPersistable = resultSetGettersPerFactory.get(factory.getClass());
-		if(resultSetPerPersistable == null){
-			resultSetPerPersistable = new HashMap<Class<?>, Map<String,ResultSetAccessor>>();
-			resultSetGettersPerFactory.put(factory.getClass(), resultSetPerPersistable);
-		} else {
-			this.resultSetGetters = resultSetPerPersistable.get(entityClass);
-		}
-		if(this.resultSetGetters == null){
-			this.resultSetGetters = getResultSetGetters(entityHandler, factory);
-			resultSetPerPersistable.put(entityClass, resultSetGetters);
-		}
-
+		this.resultSetGetters = getResultSetGetters(entityHandler, factory);
 	}
 	/**
 	 * @see RecordMapper#map(java.sql.ResultSet)
@@ -58,7 +42,7 @@ public class EntityRecordMapper<E> implements RecordMapper<E> {
 				name = metaData.getColumnName(index);
 				EntityField entityField = entityHandler.getEntityField(name);
 				if(entityField != null){
-					ResultSetAccessor resultSetGetter = resultSetGetters.get(entityField.getDBFieldName());
+					QueryValueAccessor resultSetGetter = resultSetGetters.get(entityField.getDBFieldName());
 					if(resultSetGetter!=null){
 						Object value = resultSetGetter.getValueFromResultSet(resultSet, entityField.getDBFieldName());
 						entityField.set(entity, value);
@@ -78,8 +62,8 @@ public class EntityRecordMapper<E> implements RecordMapper<E> {
 		return entity;
 	}
 	
-	private synchronized static <E> Map<String, ResultSetAccessor> getResultSetGetters(EntityHandler<E> entityHandler, EntityDaoFactory factory){
-		Map<String, ResultSetAccessor>resultSetGetters = new HashMap<String, ResultSetAccessor>();
+	private synchronized static <E> Map<String, QueryValueAccessor> getResultSetGetters(EntityHandler<E> entityHandler, EntityDaoFactory factory){
+		Map<String, QueryValueAccessor>resultSetGetters = new HashMap<String, QueryValueAccessor>();
 		SQLTypeMapper typeMapper = factory.getSqlTypeMapper();
 		for(EntityField entityField:entityHandler.getEntityFields()){
 			resultSetGetters.put(entityField.getDBFieldName(),

@@ -11,18 +11,19 @@ import java.sql.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.cch.napa.entity.SQLTypeMapper;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.SQLNull;
 import org.cch.napa.entity.annotations.DBField;
-import org.cch.napa.mapper.ResultSetAccessor;
+import org.cch.napa.mapper.QueryValueAccessor;
 /**
  * @author Christophe Champagne
  *
  */
 public class DefaultSQLTypeMapper implements SQLTypeMapper {
-	
+	private static final Logger log = Logger.getLogger(DefaultSQLTypeMapper.class.getName());
 	/**
 	 * @see SQLTypeMapper#getSqlTypeFromClass(java.lang.Class)
 	 */
@@ -86,107 +87,156 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 	/**
 	 * @see SQLTypeMapper#getResultSetGetterFromClass(java.lang.Class, int)
 	 */
-	public  ResultSetAccessor getResultSetGetterFromClass(final Class<?>cls, int sqlType){
-		ResultSetAccessor resultSetGetter = null;
+	public QueryValueAccessor getResultSetGetterFromClass(final Class<?>cls, int sqlType){
+		//TODO in the future
+		QueryValueAccessor resultSetGetter = null;
 		if((cls.equals(Object.class) || cls.equals(Serializable.class)) && sqlType!=Types.BLOB){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Object getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getObject(columnName);
-				}				
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
+					statement.setObject(index, value);
+				}
 			};
 		}  else if (cls.equals(String.class) || CharSequence.class.isAssignableFrom(cls)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(Types.VARCHAR){
 				public String getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getString(columnName);
-				}				
-			};			
-		} else if (cls.equals(Integer.class) || cls.equals(Integer.TYPE)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
+					statement.setString(index, value.toString());
+				}
+			};
+		} else if (cls.equals(Integer.class) || (cls.equals(Integer.TYPE) && Number.class.isAssignableFrom(cls))){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Integer getValue(ResultSet resultSet, String columnName) throws SQLException {
 					int val = resultSet.getInt(columnName);
 					if(resultSet.wasNull()){
 						return null;
 					}
 					return new Integer(val);
-				}				
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
+					statement.setInt(index, ((Number)value).intValue());
+				}
 			};			
-		} else if (cls.equals(Long.class) || cls.equals(Long.TYPE)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+		} else if (cls.equals(Long.class) || (cls.equals(Long.TYPE) && Number.class.isAssignableFrom(cls))){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Long getValue(ResultSet resultSet, String columnName) throws SQLException {
 					long val = resultSet.getLong(columnName);
 					if(resultSet.wasNull()){
 						return null;
 					}
 					return new Long(val);
-				}				
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setLong(index, ((Number)value).longValue());
+				}
 			};			
-		} else if (cls.equals(Short.class)  || cls.equals(Short.TYPE)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+		} else if (cls.equals(Short.class)  || (cls.equals(Short.TYPE) && Number.class.isAssignableFrom(cls))){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Short getValue(ResultSet resultSet, String columnName) throws SQLException {
 					short val = resultSet.getShort(columnName);
 					if(resultSet.wasNull()){
 						return null;
 					}
 					return new Short(val);
-				}				
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setShort(index, ((Number)value).shortValue());
+				}
 			};			
-		} else if (cls.equals(Double.class) || cls.equals(Double.TYPE)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+		} else if (cls.equals(Double.class) || (cls.equals(Double.TYPE) && Number.class.isAssignableFrom(cls))){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Double getValue(ResultSet resultSet, String columnName) throws SQLException {
 					double val = resultSet.getDouble(columnName);
 					if(resultSet.wasNull()){
 						return null;
 					}
 					return new Double(val);
-				}				
-			};			
-		}  else if (cls.equals(Float.class) || cls.equals(Float.TYPE)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setDouble(index, ((Number)value).doubleValue());
+				}
+			};
+		}  else if (cls.equals(Float.class) || (cls.equals(Float.TYPE) && Number.class.isAssignableFrom(cls))){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Float getValue(ResultSet resultSet, String columnName) throws SQLException {
 					double val = resultSet.getFloat(columnName);
 					if(resultSet.wasNull()){
 						return null;
 					}
 					return new Float(val);
-				}				
-			};			
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setFloat(index, ((Number)value).floatValue());
+				}
+			};
 		}  else if (cls.equals(BigDecimal.class)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public BigDecimal getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getBigDecimal(columnName);
-				}				
-			};			
-		} else if (cls.equals(Boolean.class) || cls.equals(Boolean.TYPE)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setBigDecimal(index, (BigDecimal) value);
+				}
+			};
+		} else if (cls.equals(Boolean.class) || (cls.equals(Boolean.TYPE) && Number.class.isAssignableFrom(cls))){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Boolean getValue(ResultSet resultSet, String columnName) throws SQLException {
 					int val = resultSet.getInt(columnName);
 					if(resultSet.wasNull()){
 						return null;
 					}
 					return new Boolean(val==1);
-				}				
-			};			
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setInt(index, ((Boolean) value).booleanValue()?1:0);
+				}
+			};
 		} else if (cls.equals(Timestamp.class) 
 				||(cls.equals(Date.class) && (sqlType == Types.TIMESTAMP || sqlType == Types.NULL))){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Date getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getTimestamp(columnName);
-				}				
-			};			
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setTimestamp(index, new java.sql.Timestamp(((Date)value).getTime()));
+				}
+			};
 		} else if ((cls.equals(java.sql.Date.class)) || (cls.equals(Date.class) && sqlType == Types.DATE)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Date getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getDate(columnName);
-				}				
-			};			
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setDate(index, new java.sql.Date(((Date)value).getTime()));
+				}
+			};
 		} else if ((cls.equals(Time.class)) || (cls.equals(Date.class) && sqlType == Types.TIME)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Date getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getTime(columnName);
-				}				
-			};			
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setTime(index, new java.sql.Time(((Date)value).getTime()));
+				}
+			};
 		} else if (Calendar.class.isAssignableFrom(cls)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Calendar getValue(ResultSet resultSet, String columnName) throws SQLException {
 					Date date = resultSet.getTimestamp(columnName);
 					Calendar cal = null;
@@ -195,10 +245,14 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 						cal.setTime(date);
 					}
 					return cal;
-				}				
-			};			
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setTime(index, new java.sql.Time(((Calendar)value).getTimeInMillis()));
+				}
+			};
 		} else if (cls.isEnum()){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				@SuppressWarnings({ "unchecked", "rawtypes" })
 				public Enum<?> getValue(ResultSet resultSet, String columnName) throws SQLException {
 					String val = resultSet.getString(columnName);
@@ -208,27 +262,35 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 						valAsEnum = Enum.valueOf((Class<? extends Enum>)cls, val);
 					} catch (Exception e) {
 						//TODO allow to be stricter by config and throw exception
-						System.err.println("Cannot convert '" + val +"' string to " + cls.getName()+ " enumeration");
+						log.severe("Cannot convert '" + val +"' string to " + cls.getName()+ " enumeration");
 					}
 					return valAsEnum;
-				}				
-			};			
+				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setString(index, ((Enum<?>)value).name());
+				}
+			};
 		} else if (cls.equals(UUID.class) && sqlType == Types.BLOB){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public UUID getValue(ResultSet resultSet, String columnName) throws SQLException {
 					byte[] val = resultSet.getBytes(columnName);
 					return val == null ? null : UUID.nameUUIDFromBytes(val);
 				}
 			};
 		} else if (cls.equals(UUID.class)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public UUID getValue(ResultSet resultSet, String columnName) throws SQLException {
 					String val = resultSet.getString(columnName);
 					return val == null ? null : UUID.fromString(val);
 				}
+
+				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException, PersistenceException {
+					statement.setString(index, ((Enum<?>)value).name());
+				}
 			};
 		} else if (cls.equals(Blob.class)){
-			resultSetGetter =  new AbstractResultSetGetter(){
+			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Blob getValue(ResultSet resultSet, String columnName) throws SQLException {
 					return resultSet.getBlob(columnName);
 				}
@@ -308,8 +370,8 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		}
 	}
 
-	protected ResultSetAccessor getResultSetBlobAccessor(){
-		return new AbstractResultSetGetter(){
+	protected QueryValueAccessor getResultSetBlobAccessor(){
+		return new AbstractQueryValueAccessor(){
 			public Serializable getValue(ResultSet resultSet, String columnName) throws SQLException, PersistenceException {
 				Serializable serializable = null;
 				try {

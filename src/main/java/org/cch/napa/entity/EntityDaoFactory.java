@@ -5,7 +5,7 @@ import org.cch.napa.JdbcDao;
 import org.cch.napa.exceptions.AnnotationException;
 import org.cch.napa.exceptions.PersistenceException;
 import org.cch.napa.entity.annotations.atk.EntityHandler;
-import org.cch.napa.mapper.impl.EntityRecordMapper;
+import org.cch.napa.entity.impl.EntityRecordMapper;
 
 /**
  * @author Christophe Champagne

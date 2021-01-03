@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.cch.napa.exceptions.PersistenceException;
-import org.cch.napa.mapper.ResultSetAccessor;
+import org.cch.napa.mapper.QueryValueAccessor;
 
 /**
  * @author Christophe Champagne
@@ -18,8 +18,8 @@ public interface SQLTypeMapper {
 
 	int getPrecisionFromType(int type);
 
-	ResultSetAccessor getResultSetGetterFromClass(Class<?> cls,
-			int sqlType);
+	QueryValueAccessor getResultSetGetterFromClass(Class<?> cls,
+                                                   int sqlType);
 	
 	void setParameter(PreparedStatement statement, int index, Object value)throws SQLException, PersistenceException;
 

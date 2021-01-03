@@ -13,10 +13,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JdbcDaoImpl implements JdbcDao {
-	private ConnectionProvider connectionProvider;
-	private SQLTypeMapper sqlTypeMapper;
+	private final static Logger log = Logger.getLogger(JdbcDaoImpl.class.toString());
+	private final ConnectionProvider connectionProvider;
+	private final SQLTypeMapper sqlTypeMapper;
 	
 	public JdbcDaoImpl(ConnectionProvider connectionProvider, EntityDaoFactory factory) {
 		this.connectionProvider = connectionProvider;
@@ -55,7 +58,7 @@ public class JdbcDaoImpl implements JdbcDao {
 				try {
 					statement.close();
 				} catch (java.sql.SQLException e) {
-					e.printStackTrace();
+					log.log(Level.WARNING, "Could not close prepared statement", e);
 				}
 			}
 		}
@@ -82,18 +85,10 @@ public class JdbcDaoImpl implements JdbcDao {
 		return statement;
 	}
 
-//	protected Blob getNewBlob(Connection connection) throws java.sql.SQLException{
-//		Blob blob = null;
-//		if(connection instanceof DB2eConnection){
-//			DB2eConnection db2eConnection = (DB2eConnection)connection;
-//			blob = db2eConnection.createBlob();
-//		}
-//		return blob;
-//	}
 	/* (non-Javadoc)
 	 * @see org.cch.napa.JdbcDao#executeUpdate(java.lang.String, java.lang.Object)
 	 */
-	public void executeUpdate(String query, Object...parameters) throws PersistenceException{
+	public void executeUpdate(String query, Object...parameters) throws PersistenceException {
 		PreparedStatement statement = null;
 		try{
 			statement = prepareStatement(query, parameters);
@@ -118,8 +113,7 @@ public class JdbcDaoImpl implements JdbcDao {
 				try {
 					statement.close();
 				} catch (java.sql.SQLException e) {
-					System.err.println("Could not close statement");
-					e.printStackTrace();
+					log.log(Level.SEVERE,"Could not close statement", e);
 				}
 			}
 		}

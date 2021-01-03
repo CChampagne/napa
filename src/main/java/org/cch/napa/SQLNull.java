@@ -1,7 +1,7 @@
 package org.cch.napa;
 
 /**
- * class wrapping null value while keeping information about the target type
+ * Class wrapping null value while keeping information about the target type.
  * @author Christophe Champagne
  *
  */
