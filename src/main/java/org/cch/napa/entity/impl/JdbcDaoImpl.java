@@ -41,18 +41,24 @@ public class JdbcDaoImpl implements JdbcDao {
 	/**
 	 * @see org.cch.napa.JdbcDao#select(java.lang.String, org.cch.napa.mapper.RecordMapper, java.lang.Object[])
 	 */
-	public <T> List<T> select(String query, RecordMapper<T> mapper,Object...parameters) throws PersistenceException{
-		List<T> list = new ArrayList<T>();
-		PreparedStatement statement = null;
+	public <T> List<T> select(String query, RecordMapper<T> mapper,Object...parameters) throws PersistenceException {
 		try{
-			statement = prepareStatement(query, parameters);
+			PreparedStatement statement = prepareStatement(query, parameters);
+			return select(statement, mapper);
+		} catch(SQLException e){
+			throw new SQLException("Failed executing query\n"+ queryAndParametersToText(query, parameters), e.getCause());
+		}
+	}
+	public <T> List<T> select(PreparedStatement statement, RecordMapper<T> mapper) throws PersistenceException {
+		List<T> list = new ArrayList<T>();
+		try{
 			ResultSet resultSet =  statement.executeQuery();
 			while(resultSet.next()){
 				T item = mapper.map(resultSet);
 				list.add(item);
 			}
 		}catch(java.sql.SQLException e){
-			throw new SQLException("Failed\n"+ queryAndParametersToText(query, parameters), e);
+			throw new SQLException("Failed executing query\n", e);
 		} finally {
 			if(statement != null){
 				try {
@@ -79,35 +85,43 @@ public class JdbcDaoImpl implements JdbcDao {
 					sqlTypeMapper.setParameter(statement, index, o);
 				}
 			}
+			if(log.isLoggable(Level.FINE)) {
+				log.fine("Prepared sql statement :\n" + queryAndParametersToText(query,parameters));
+			}
 		} catch (java.sql.SQLException e) {
 			throw new SQLException("Failed to prepare statement of\n"+ queryAndParametersToText(query, parameters),e);
 		}
 		return statement;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cch.napa.JdbcDao#executeUpdate(java.lang.String, java.lang.Object)
+	/**
+	 * @see org.cch.napa.JdbcDao#executeUpdate(java.lang.String, java.lang.Object[])
 	 */
 	public void executeUpdate(String query, Object...parameters) throws PersistenceException {
-		PreparedStatement statement = null;
 		try{
-			statement = prepareStatement(query, parameters);
+			PreparedStatement statement = prepareStatement(query, parameters);
+			executeUpdate(statement);
+		} catch(SQLException e){
+			throw new SQLException(e.getMessage() + "\n"+ queryAndParametersToText(query, parameters), e.getCause());
+		}
+	}
+	public void executeUpdate(PreparedStatement statement) throws PersistenceException {
+		try{
 			statement.executeUpdate();
 			if(!statement.getConnection().getAutoCommit()){
 				statement.getConnection().commit();
 			}
 		} catch(java.sql.SQLException e){
-			String trace = "\n" + queryAndParametersToText(query, parameters);
 			if(statement != null){
 				try {
 					if(!statement.getConnection().getAutoCommit()){
 						statement.getConnection().rollback();
 					}
 				} catch (java.sql.SQLException e1) {
-					throw new SQLException("Could not rollback " + trace, e1);
+					throw new SQLException("Could not rollback", e1);
 				}
 			}
-			throw new SQLException("Exception while executing " + trace, e);
+			throw new SQLException("Exception while executing", e);
 		} finally {
 			if(statement != null){
 				try {
@@ -118,7 +132,6 @@ public class JdbcDaoImpl implements JdbcDao {
 			}
 		}
 	}
-
 	private String queryAndParametersToText(String query, Object...parameters){
 		StringBuffer params = new StringBuffer(query);
 		params.append('\n');
