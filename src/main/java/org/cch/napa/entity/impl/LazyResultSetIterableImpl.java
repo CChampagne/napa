@@ -12,22 +12,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @param <T> The Object type
  */
 class LazyResultSetIterableImpl<T> implements LazyResultSetIterable<T> {
+    private static Logger log = Logger.getLogger(LazyResultSetIterableImpl.class.toString());
     private LazyResultSetIterator<T> iterator;
+
 
     public LazyResultSetIterableImpl(PreparedStatement preparedStatement, RecordMapper<T> mapper) throws org.cch.napa.exceptions.SQLException {
         iterator = new LazyResultSetIterator<T>(preparedStatement, mapper);
     }
-    public Iterator<T> iterator() {
+    public LazyResultSetIterator<T> iterator() {
         return iterator;
     }
 
-    public void close() throws IOException {
+    public void close() {
         iterator.close();
     }
 
@@ -84,8 +88,13 @@ class LazyResultSetIterableImpl<T> implements LazyResultSetIterable<T> {
            throw new UnsupportedOperationException();
         }
 
-        public void close() throws IOException {
-
+        public void close() {
+            isClosed = true;
+            try {
+                preparedStatement.close();
+            } catch (SQLException ex) {
+                log.log(Level.SEVERE,"Could not close statement", ex);
+            }
         }
     }
 }
