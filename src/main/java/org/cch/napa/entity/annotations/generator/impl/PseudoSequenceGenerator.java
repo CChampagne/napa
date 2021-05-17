@@ -20,7 +20,7 @@ public class PseudoSequenceGenerator extends AbstractSequenceGenerator{
 	public final static String PARAM_VALUE_NOT_CACHED = "false";
 
 	private String query;
-	private SingleValueMapper mapper = new SingleValueMapper();
+	private final SingleValueMapper mapper = new SingleValueMapper();
 	private boolean cached = true;
 	private Long lastValue;
 	/**
@@ -29,14 +29,13 @@ public class PseudoSequenceGenerator extends AbstractSequenceGenerator{
 	public Number getNextValue() throws PersistenceException {
 		if(!cached  || lastValue == null){
 			if(getFactory()!=null && getFactory().getJdbcDao() !=null){
-				List<Long> values= getFactory().getJdbcDao().select(query, mapper);
-				lastValue = values.get(0);
+				lastValue = getFactory().getJdbcDao().select(query, mapper).first();
 			}
 		}
 		if(lastValue != null){
-			lastValue = new Long(lastValue.longValue() + getStep());
+			lastValue = lastValue + getStep();
 			if (isInt()){			
-				return new Integer(lastValue.intValue());
+				return lastValue.intValue();
 			} 
 		}
 		return lastValue;
@@ -53,7 +52,7 @@ public class PseudoSequenceGenerator extends AbstractSequenceGenerator{
 		query = "select max("+ field.getDBFieldName() + ") from " + entity.getTableName();
 		Parameter[] params = annotation.parameters();
 		for (Parameter param : params){
-			if(PARAM_NAME_CACHED.equals(param)){
+			if(PARAM_NAME_CACHED.equals(param.name())){
 				cached = !PARAM_VALUE_NOT_CACHED.equals(param.value());
 			}
 		}

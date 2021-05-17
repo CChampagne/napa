@@ -118,7 +118,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					if(resultSet.wasNull()){
 						return null;
 					}
-					return new Integer(val);
+					return val;
 				}
 
 				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
@@ -132,7 +132,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					if(resultSet.wasNull()){
 						return null;
 					}
-					return new Long(val);
+					return val;
 				}
 
 				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
@@ -146,7 +146,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					if(resultSet.wasNull()){
 						return null;
 					}
-					return new Short(val);
+					return val;
 				}
 
 				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
@@ -160,7 +160,7 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					if(resultSet.wasNull()){
 						return null;
 					}
-					return new Double(val);
+					return val;
 				}
 
 				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
@@ -170,11 +170,11 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 		}  else if (cls.equals(Float.class) || (cls.equals(Float.TYPE) && Number.class.isAssignableFrom(cls))){
 			resultSetGetter =  new AbstractQueryValueAccessor(sqlType){
 				public Float getValue(ResultSet resultSet, String columnName) throws SQLException {
-					double val = resultSet.getFloat(columnName);
+					float val = resultSet.getFloat(columnName);
 					if(resultSet.wasNull()){
 						return null;
 					}
-					return new Float(val);
+					return val;
 				}
 
 				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
@@ -198,11 +198,11 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 					if(resultSet.wasNull()){
 						return null;
 					}
-					return new Boolean(val==1);
+					return val==1;
 				}
 
 				protected void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
-					statement.setInt(index, ((Boolean) value).booleanValue()?1:0);
+					statement.setInt(index, (Boolean) value ?1:0);
 				}
 			};
 		} else if (cls.equals(Timestamp.class) 
@@ -366,23 +366,19 @@ public class DefaultSQLTypeMapper implements SQLTypeMapper {
 
 	}
 	protected void setBlob(PreparedStatement statement, Object o, int index) throws java.sql.SQLException, PersistenceException{
-		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
-		ByteArrayInputStream bas = null;
 		try {
-			bos = new ByteArrayOutputStream();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			oos = new ObjectOutputStream(bos);
 			oos.writeObject(o);
 			byte[] content = bos.toByteArray();
-			bas = new ByteArrayInputStream(content);
+			ByteArrayInputStream bas = new ByteArrayInputStream(content);
 			statement.setBinaryStream(index, bas, content.length);
-		} catch (IOException e) {
-			throw new PersistenceException(e);
 		} catch (Exception e) {
 			throw new PersistenceException(e);
 		} finally {
 	        try {
-				oos.close();
+				if(oos != null) oos.close();
 			} catch (IOException e) {
 				throw new PersistenceException("Could not close the queue inputStream", e);
 			}			

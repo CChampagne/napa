@@ -6,11 +6,12 @@ import org.cch.napa.exceptions.RuntimePersistenceException;
 import org.cch.napa.mapper.RecordMapper;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,22 @@ class LazyResultSetIterableImpl<T> implements LazyResultSetIterable<T> {
 
     public void close() {
         iterator.close();
+    }
+
+    @Override
+    public List<T> asList() {
+        List<T> list = new ArrayList<T>();
+        for(T item : this) {
+           list.add(item);
+        }
+        return list;
+    }
+
+    @Override
+    public T first() {
+        T item = iterator.hasNext() ? iterator.next() : null;
+        close();
+        return item;
     }
 
     private class LazyResultSetIterator<T> implements Iterator<T>, Closeable {
@@ -62,26 +79,21 @@ class LazyResultSetIterableImpl<T> implements LazyResultSetIterable<T> {
                 return hasNext;
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                return hasNext = false;
             }
+            return hasNext = false;
         }
        public T next() {
-            T item = null;
-            if (hasNext == null) {
-                hasNext();
-            }
-            if(!hasNext) {
+            if(!hasNext()) {
                 throw new NoSuchElementException();
             }
             hasNext = null;
-             try {
-                item = mapper.map(resultSet);
+            try {
+                return mapper.map(resultSet);
             } catch (SQLException ex) {
                 throw new RuntimePersistenceException(ex);
             } catch (PersistenceException ex) {
                 throw new RuntimePersistenceException(ex);
             }
-             return item;
         }
 
         public void remove() {
@@ -89,6 +101,7 @@ class LazyResultSetIterableImpl<T> implements LazyResultSetIterable<T> {
         }
 
         public void close() {
+            if (isClosed) return;
             isClosed = true;
             try {
                 preparedStatement.close();

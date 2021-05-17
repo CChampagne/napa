@@ -18,7 +18,7 @@ import java.util.List;
 public interface JdbcDao {
 
 	/**
-	 * Executes a select and returns an {@link LazyResultSetIterable} that will populate the data object on the fly.
+	 * Executes a select and returns a {@link LazyResultSetIterable} that will populate the data object on the fly.
 	 * It thus preferable if the query returns an important number of records.
 	 * Note that the iterable wraps a PreparedStatement that needs to be closed so it also implements Closeable.
 	 * It will be automatically closed if all the the items have been iterated.
@@ -28,27 +28,17 @@ public interface JdbcDao {
 	 * @return The LazyResultSetIterable
 	 * @throws PersistenceException a general persistence exception of a {@link SQLException} itself cause by a native {@link java.sql.SQLException}
 	 */
-	<T> LazyResultSetIterable<T> lazilySelect(String query, RecordMapper<T> mapper,
+	<T> LazyResultSetIterable<T> select(String query, RecordMapper<T> mapper,
 											  Object... parameters) throws PersistenceException;
-	/**
-	 * Executes a select and returns a list of data object of the expected type
-	 * @param query The sql query to execute (optionally with indexed parameters)
-	 * @param mapper The object that will map the recordset into the expected entities
-	 * @param parameters The parameters of the query
-	 * @return a list of data object corresponding to the given generic type T
-	 * @throws PersistenceException a general persistence exception of a {@link SQLException} itself cause by a native {@link java.sql.SQLException}
-	 */
-	<T> List<T> select(String query, RecordMapper<T> mapper,
-					   Object... parameters) throws PersistenceException;
 
 	/**
-	 * Executes a select and returns a list of data object of the expected type.
+	 * Executes a select and returns a {@link LazyResultSetIterable} that will populate the data object on the fly.
 	 * @param statement The already prepared statement
 	 * @param mapper The object that will map the recordset into the expected entities
 	 * @return a list of data object corresponding to the given generic type T
 	 * @throws PersistenceException a general persistence exception of a {@link SQLException} itself cause by a native {@link java.sql.SQLException}
 	 */
-	<T> List<T> select(PreparedStatement statement, RecordMapper<T> mapper) throws PersistenceException;
+	<T> LazyResultSetIterable<T> select(PreparedStatement statement, RecordMapper<T> mapper) throws PersistenceException;
 
 	/**
 	 * Prepares a statement following the query and the optional parameters.

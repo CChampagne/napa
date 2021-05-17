@@ -31,44 +31,20 @@ public class JdbcDaoImpl implements JdbcDao {
 
 	/**
 	 *
-	 * @see org.cch.napa.JdbcDao#lazilySelect(String, RecordMapper, Object...)
+	 * @see org.cch.napa.JdbcDao#select(String, RecordMapper, Object...)
 	 */
-	public <T> LazyResultSetIterable<T> lazilySelect(String query, RecordMapper<T> mapper, Object... parameters) throws PersistenceException {
+	public <T> LazyResultSetIterable<T> select(String query, RecordMapper<T> mapper, Object... parameters) throws PersistenceException {
 		PreparedStatement statement = prepareStatement(query, parameters);
-		return new LazyResultSetIterableImpl<T>(statement,mapper);
+		try {
+			return new LazyResultSetIterableImpl<T>(statement,mapper);
+		} catch (SQLException e) {
+			log.severe(queryAndParametersToText(query, parameters));
+			throw e;
+		}
 	}
 
-	/**
-	 * @see org.cch.napa.JdbcDao#select(java.lang.String, org.cch.napa.mapper.RecordMapper, java.lang.Object[])
-	 */
-	public <T> List<T> select(String query, RecordMapper<T> mapper,Object...parameters) throws PersistenceException {
-		try{
-			PreparedStatement statement = prepareStatement(query, parameters);
-			return select(statement, mapper);
-		} catch(SQLException e){
-			throw new SQLException("Failed executing query\n"+ queryAndParametersToText(query, parameters), e.getCause());
-		}
-	}
-	public <T> List<T> select(PreparedStatement statement, RecordMapper<T> mapper) throws PersistenceException {
-		List<T> list = new ArrayList<T>();
-		try{
-			ResultSet resultSet =  statement.executeQuery();
-			while(resultSet.next()){
-				T item = mapper.map(resultSet);
-				list.add(item);
-			}
-		}catch(java.sql.SQLException e){
-			throw new SQLException("Failed executing query\n", e);
-		} finally {
-			if(statement != null){
-				try {
-					statement.close();
-				} catch (java.sql.SQLException e) {
-					log.log(Level.WARNING, "Could not close prepared statement", e);
-				}
-			}
-		}
-		return list;
+	public <T> LazyResultSetIterable<T> select(PreparedStatement statement, RecordMapper<T> mapper) throws PersistenceException {
+		return new LazyResultSetIterableImpl<T>(statement,mapper);
 	}
 	/**
 	 * @see org.cch.napa.JdbcDao#prepareStatement(java.lang.String, java.lang.Object[])
@@ -112,14 +88,12 @@ public class JdbcDaoImpl implements JdbcDao {
 				statement.getConnection().commit();
 			}
 		} catch(java.sql.SQLException e){
-			if(statement != null){
-				try {
-					if(!statement.getConnection().getAutoCommit()){
-						statement.getConnection().rollback();
-					}
-				} catch (java.sql.SQLException e1) {
-					throw new SQLException("Could not rollback", e1);
+			try {
+				if(!statement.getConnection().getAutoCommit()){
+					statement.getConnection().rollback();
 				}
+			} catch (java.sql.SQLException e1) {
+				throw new SQLException("Could not rollback", e1);
 			}
 			throw new SQLException("Exception while executing", e);
 		} finally {
@@ -133,7 +107,7 @@ public class JdbcDaoImpl implements JdbcDao {
 		}
 	}
 	private String queryAndParametersToText(String query, Object...parameters){
-		StringBuffer params = new StringBuffer(query);
+		StringBuilder params = new StringBuilder(query);
 		params.append('\n');
 		int index = 1;
 		for(Object parameter: parameters){
@@ -143,11 +117,11 @@ public class JdbcDaoImpl implements JdbcDao {
 			if (parameter == null)
 				params.append("NULL");
 			else if (parameter instanceof CharSequence)
-				params.append("'" + parameter + "'");
+				params.append("'").append(parameter).append("'");
 			else if (parameter instanceof Number || parameter instanceof Boolean || parameter.getClass().isPrimitive())
 				params.append(parameter);
 			else
-				params.append("{" + parameter + "}");
+				params.append("{").append(parameter).append("}");
 			params.append('\n');
 		}
 		return params.toString();

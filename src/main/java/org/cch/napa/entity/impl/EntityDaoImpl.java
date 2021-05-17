@@ -27,17 +27,17 @@ import java.util.List;
  */
 public class EntityDaoImpl<E> implements EntityDao<E> {
 	
-	private JdbcDao jdbcDao;
-	private Class<E> entityClass;
-	private SQLGenerator<E> sqlGenerator;
-	private EntityHandler<E> entityHandler;
-	private RecordMapper<E> recordMapper;
-	private EntityDaoFactory factory;
+	private final JdbcDao jdbcDao;
+	private final Class<E> entityClass;
+	private final SQLGenerator<E> sqlGenerator;
+	private final EntityHandler<E> entityHandler;
+	private final RecordMapper<E> recordMapper;
+	private final EntityDaoFactory factory;
+	private final String isPresentQuery;
+	private final String countQuery;
+
 	private enum Operation{INSERT, UPDATE, SELECT, DELETE}
-	private String isPresentQuery;
-	private String countQuery;
-	
-	
+
 	public EntityDaoImpl(Class<E> entityClass, EntityDaoFactory factory) throws AnnotationException{
 		this(entityClass, factory, factory.getDefaultConnectionProvider());
 	}
@@ -55,7 +55,7 @@ public class EntityDaoImpl<E> implements EntityDao<E> {
 	/**
 	 * @see EntityDao#selectAll()
 	 */
-	public List<E> selectAll() throws PersistenceException {
+	public LazyResultSetIterable<E> selectAll() throws PersistenceException {
 		return jdbcDao.select(sqlGenerator.createSelectAll(), recordMapper);
 	}
 	/***
@@ -65,7 +65,7 @@ public class EntityDaoImpl<E> implements EntityDao<E> {
 			SQLException {
 		E retrievedEntity = null;
 		String query = sqlGenerator.createSelect();
-		List<E> retrievedEntities =  jdbcDao.select(query, recordMapper, getPrimaryKeyValues(entityParameter, Operation.SELECT));
+		List<E> retrievedEntities =  jdbcDao.select(query, recordMapper, getPrimaryKeyValues(entityParameter, Operation.SELECT)).asList();
 		if(retrievedEntities != null && retrievedEntities.size() == 1){
 			retrievedEntity = retrievedEntities.get(0);
 		} else if(retrievedEntities != null && retrievedEntities.size() > 1){
@@ -76,23 +76,9 @@ public class EntityDaoImpl<E> implements EntityDao<E> {
 	}
 
 	/**
-	 * @see EntityDao#lazilySelectAll()
-	 */
-	public LazyResultSetIterable<E> lazilySelectAll() throws PersistenceException {
-		return  jdbcDao.lazilySelect(sqlGenerator.createSelectAll(), recordMapper);
-	}
-
-	/**
-	 * @see EntityDao#lazilySelect(String, Object...)
-	 */
-	public LazyResultSetIterable<E> lazilySelect(String query, Object... parameters) throws PersistenceException {
-		return jdbcDao.lazilySelect(query, recordMapper, parameters);
-	}
-
-	/**
 	 * @see EntityDao#select(java.lang.String, java.lang.Object[])
 	 */
-	public List<E> select(String query, Object... parameters)
+	public LazyResultSetIterable<E> select(String query, Object... parameters)
 			throws PersistenceException, SQLException {
 		return jdbcDao.select(query, recordMapper, parameters);
 	}
@@ -141,8 +127,7 @@ public class EntityDaoImpl<E> implements EntityDao<E> {
 	 * @see EntityDao#recordExists(E)
 	 */
 	public boolean recordExists(E entity) throws PersistenceException {
-		List<Long> values= jdbcDao.select(isPresentQuery, new SingleValueMapper(), getPrimaryKeyValues(entity, Operation.SELECT));
-		long count = values.get(0);
+		long count = jdbcDao.select(isPresentQuery, new SingleValueMapper(), getPrimaryKeyValues(entity, Operation.SELECT)).first();
 		return count > 0;
 	}
 	/**
@@ -155,11 +140,8 @@ public class EntityDaoImpl<E> implements EntityDao<E> {
 	 * @see EntityDao#count(java.lang.String, java.lang.Object[])
 	 */
 	public long count(String query, Object... parameters) throws PersistenceException {
-		List<Long> values = jdbcDao.select(query, new SingleValueMapper(), parameters);
-		if(values != null && !values.isEmpty() && values.get(0)!=null){
-			return values.get(0).longValue();
-		}
-		return 0;
+		Long value = jdbcDao.select(query, new SingleValueMapper(), parameters).first();
+		return (value != null)? value : 0;
 	}
 	/**
 	 * @see EntityDao#getEntityClass()
@@ -180,7 +162,7 @@ public class EntityDaoImpl<E> implements EntityDao<E> {
 		try {
 			fields = new Object[entityFields.size()];
 			int i=0;
-			for(EntityField field: entityFields){
+			for(EntityField field: entityFields) {
 				Object val = field.get(entity);
 				if(field.getGenerator()!=null){
 					GeneratedValue annotation = field.getGeneratedValueAnnotation();
